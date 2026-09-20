@@ -1,21 +1,30 @@
-# Cloudflare Pages — static Next.js export (output: "export" → out/)
+# Cloudflare Workers — static Next.js export (output: "export" → out/)
 #
-# Cloudflare dashboard build settings:
+# Dashboard build settings (Workers & Pages → kelcee-beauty-co → Settings):
 #   Build command:     npm run build
-#   Output dir:        out
-#   Deploy command:    npm run deploy  (or leave empty)
+#   Deploy command:    npm run deploy:ci
 #   Production branch: main
-#   Do NOT use: npx wrangler deploy
 #
-# Branch workflow (no extra env vars):
-#   main    → kelceehairco.com + production workers.dev → coming soon
-#   staging → *-kelcee-beauty-co.*.workers.dev preview URL → full site
-#   Copy the preview URL from Deployments after pushing to staging.
+# URLs:
+#   Production:  https://kelceehairco.com          (main branch)
+#   Preview:     https://preview.kelceehairco.com  (staging/preview branch)
+#
+# kelceehairco.com must be on Cloudflare DNS for custom domains to auto-provision.
 #
 name = "kelcee-beauty-co"
 compatibility_date = "2024-09-23"
-pages_build_output_dir = "out"
+preview_urls = true
 
-# Fallback when Cloudflare runs `npx wrangler deploy` after the build.
 [assets]
 directory = "./out"
+
+# Preview environment — separate Worker, own custom domain.
+[env.preview]
+name = "kelcee-beauty-co-preview"
+
+[env.preview.assets]
+directory = "./out"
+
+[[env.preview.routes]]
+pattern = "preview.kelceehairco.com"
+custom_domain = true

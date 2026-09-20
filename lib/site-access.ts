@@ -5,8 +5,8 @@
  * project name). Those always get the full site. Production hostnames get coming soon.
  *
  * Workflow:
- *   staging branch → push → Cloudflare preview URL → full site
- *   main branch    → push → kelceehairco.com → coming soon
+ *   staging/preview branch → preview.kelceehairco.com → full site
+ *   main branch            → kelceehairco.com → coming soon
  *
  * To launch: remove SiteAccessGate from SiteChrome (or delete this file).
  */
@@ -29,7 +29,14 @@ export function isPreviewDeploymentHost(hostname: string): boolean {
     return true;
   }
 
-  // e.g. abc123-kelcee-beauty-co.kitchel301.workers.dev
+  if (
+    host === "preview.kelceehairco.com" ||
+    host === "kelcee-beauty-co-preview.kitchel301.workers.dev"
+  ) {
+    return true;
+  }
+
+  // e.g. preview-kelcee-beauty-co.kitchel301.workers.dev
   if (/^.+-kelcee-beauty-co\.[^.]+\.workers\.dev$/.test(host)) {
     return true;
   }

@@ -7,7 +7,9 @@
     "build": "next build --turbopack",
     "start": "next start",
     "lint": "eslint",
-    "deploy": "wrangler pages deploy out --project-name=kelcee-beauty-co",
+    "deploy": "wrangler deploy",
+    "deploy:preview": "wrangler deploy --env preview",
+    "deploy:ci": "bash scripts/deploy.sh",
     "pages:deploy": "wrangler pages deploy out --project-name=kelcee-beauty-co"
   },
   "engines": {
