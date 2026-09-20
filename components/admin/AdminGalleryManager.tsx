@@ -6,6 +6,7 @@ import {
   type GalleryImage,
 } from "@/lib/supabase/client";
 import { getGalleryBucket } from "@/lib/supabase/gallery-bucket";
+import { ConfirmDialog } from "@/components/admin/ConfirmDialog";
 import {
   deleteGalleryImage,
   listGalleryImages,
@@ -23,6 +24,8 @@ export function AdminGalleryManager() {
   const [captionDrafts, setCaptionDrafts] = useState<Record<string, string>>(
     {},
   );
+  const [imageToDelete, setImageToDelete] = useState<GalleryImage | null>(null);
+  const [deleting, setDeleting] = useState(false);
 
   const loadImages = useCallback(async () => {
     setLoading(true);
@@ -85,19 +88,22 @@ export function AdminGalleryManager() {
     await loadImages();
   }
 
-  async function handleDelete(image: GalleryImage) {
-    const confirmed = window.confirm("Delete this photo from the gallery?");
-    if (!confirmed) return;
+  async function handleConfirmDelete() {
+    if (!imageToDelete) return;
 
+    setDeleting(true);
     setError(null);
     setMessage(null);
 
-    const result = await deleteGalleryImage(image);
+    const result = await deleteGalleryImage(imageToDelete);
+    setDeleting(false);
+
     if (result.error) {
       setError(result.error);
       return;
     }
 
+    setImageToDelete(null);
     setMessage("Photo deleted.");
     await loadImages();
   }
@@ -255,7 +261,7 @@ export function AdminGalleryManager() {
                       </button>
                       <button
                         type="button"
-                        onClick={() => handleDelete(image)}
+                        onClick={() => setImageToDelete(image)}
                         className="rounded-full border border-rose-200 px-4 py-2 text-xs font-medium text-blush-700 transition hover:bg-rose-100"
                       >
                         Delete
@@ -268,6 +274,21 @@ export function AdminGalleryManager() {
           </div>
         )}
       </section>
+
+      <ConfirmDialog
+        open={imageToDelete !== null}
+        title="Delete photo?"
+        description="This removes the photo from your public gallery and deletes it from storage. This can’t be undone."
+        confirmLabel="Delete photo"
+        cancelLabel="Keep photo"
+        loading={deleting}
+        onConfirm={handleConfirmDelete}
+        onCancel={() => {
+          if (!deleting) {
+            setImageToDelete(null);
+          }
+        }}
+      />
     </div>
   );
 }
