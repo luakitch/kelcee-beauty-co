@@ -6,7 +6,7 @@ import { siteConfig } from "@/lib/site-config";
 
 export const metadata: Metadata = {
   title: "Contact",
-  description: `Get in touch with ${siteConfig.name} — book via Instagram, email, or phone.`,
+  description: `Get in touch with ${siteConfig.name} — book online, email, or phone.`,
 };
 
 export default function ContactPage() {
@@ -14,7 +14,7 @@ export default function ContactPage() {
     <>
       <PageHeader
         title="Contact"
-        description="The easiest way to book is through Instagram — but you can also reach out directly."
+        description="Book online anytime — or reach out directly with questions."
       />
 
       <section className="mx-auto max-w-4xl px-4 pb-16 sm:px-6 sm:pb-20">
@@ -57,10 +57,10 @@ export default function ContactPage() {
             Booking Policy
           </h2>
           <p className="mx-auto mt-3 max-w-lg text-sm leading-relaxed text-charcoal/70">
-            Appointments are confirmed via Instagram DM. A deposit may be
-            required for color services — details provided at booking. Please
-            arrive 10 minutes early and let us know if you need to reschedule
-            at least 24 hours in advance.
+            Appointments are confirmed through Square when you book online. A
+            deposit may be required for color services — details shown during
+            booking. Please arrive 10 minutes early and let us know if you need
+            to reschedule at least 24 hours in advance.
           </p>
         </div>
       </section>

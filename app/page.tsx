@@ -72,8 +72,7 @@ export default function HomePage() {
           Ready for Your Glow-Up?
         </h2>
         <p className="mt-4 text-lg text-charcoal/70">
-          Send a DM on Instagram to book your appointment. Can&apos;t wait to
-          meet you!
+          Book online in just a few clicks. Can&apos;t wait to meet you!
         </p>
         <div className="mt-8">
           <BookButton size="lg" />

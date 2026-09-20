@@ -29,8 +29,8 @@ export default function ServicesPage() {
             Ready to book?
           </h2>
           <p className="mx-auto mt-3 max-w-md text-charcoal/70">
-            Message us on Instagram with the service you&apos;re interested in
-            and we&apos;ll get you scheduled.
+            Pick your service and schedule a time online — it only takes a few
+            minutes.
           </p>
           <div className="mt-6">
             <BookButton />

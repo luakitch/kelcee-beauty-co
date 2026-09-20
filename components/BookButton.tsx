@@ -14,18 +14,18 @@ const sizeClasses = {
 export function BookButton({ className = "", size = "md" }: BookButtonProps) {
   return (
     <a
-      href={siteConfig.instagramUrl}
+      href={siteConfig.bookingUrl}
       target="_blank"
       rel="noopener noreferrer"
       className={`inline-flex items-center justify-center gap-2 rounded-full bg-blush-500 font-medium text-white shadow-md transition hover:bg-blush-600 hover:shadow-lg ${sizeClasses[size]} ${className}`}
     >
-      <InstagramIcon />
-      Book on Instagram
+      <CalendarIcon />
+      Book an Appointment
     </a>
   );
 }
 
-function InstagramIcon() {
+function CalendarIcon() {
   return (
     <svg
       width="20"
@@ -38,9 +38,10 @@ function InstagramIcon() {
       strokeLinejoin="round"
       aria-hidden="true"
     >
-      <rect x="2" y="2" width="20" height="20" rx="5" ry="5" />
-      <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z" />
-      <line x1="17.5" y1="6.5" x2="17.51" y2="6.5" />
+      <rect x="3" y="4" width="18" height="18" rx="2" ry="2" />
+      <line x1="16" y1="2" x2="16" y2="6" />
+      <line x1="8" y1="2" x2="8" y2="6" />
+      <line x1="3" y1="10" x2="21" y2="10" />
     </svg>
   );
 }

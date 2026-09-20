@@ -7,12 +7,15 @@ export const siteConfig = {
   tagline: "Soft color. Sweet styles. Salon magic.",
   description:
     "A boutique hair studio specializing in lived-in color, soft styling, and that perfect pink-pastel glow.",
+  bookingUrl:
+    process.env.NEXT_PUBLIC_BOOKING_URL ??
+    "https://book.squareup.com/appointments/1s5oteiurlqsjl/location/L4RM80YTMFAKH/services",
   instagramUrl:
     process.env.NEXT_PUBLIC_INSTAGRAM_URL ??
     "https://instagram.com/kelceebeautyco",
   email: "hello@kelceebeautyco.com",
   phone: "(555) 123-4567",
-  location: "Your City, ST",
+  location: "Logansport, IN",
   hours: {
     weekdays: "Tuesday – Friday: 10am – 6pm",
     saturday: "Saturday: 9am – 3pm",
@@ -25,6 +28,7 @@ export const navLinks = [
   { href: "/services", label: "Services" },
   { href: "/gallery", label: "Gallery" },
   { href: "/about", label: "About" },
+  { href: "/book", label: "Book" },
   { href: "/contact", label: "Contact" },
 ] as const;
 

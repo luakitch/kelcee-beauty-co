@@ -25,8 +25,8 @@ export default function GalleryPage() {
             Love what you see?
           </h2>
           <p className="mx-auto mt-3 max-w-md text-charcoal/70">
-            Send us your inspo pics on Instagram and let&apos;s create something
-            beautiful together.
+            Book an appointment and bring your inspo — let&apos;s create
+            something beautiful together.
           </p>
           <div className="mt-6">
             <BookButton />
