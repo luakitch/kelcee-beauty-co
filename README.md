@@ -63,8 +63,8 @@ This site is a **static export** (`output: "export"` → `out/`). Use **Cloudfla
 | Framework preset | None (or Next.js Static HTML Export) |
 | Build command | `npm run build` |
 | Build output directory | `out` |
-| **Deploy command** | **Leave empty** |
-| Node version | `20` (or set env var `NODE_VERSION=20`) |
+| **Deploy command** | `npm run pages:deploy` (or leave empty if Cloudflare auto-publishes `out/`) |
+| Node version | `22` (matches `.node-version`; or set env var `NODE_VERSION=22`) |
 
 4. Add environment variables in **Settings → Environment variables** (Production):
 
@@ -75,7 +75,7 @@ This site is a **static export** (`output: "export"` → `out/`). Use **Cloudfla
 | `NEXT_PUBLIC_SUPABASE_GALLERY_BUCKET` | `gallery` |
 | `NEXT_PUBLIC_ADMIN_EMAILS` | Comma-separated admin emails |
 | `NEXT_PUBLIC_INSTAGRAM_URL` | Instagram profile URL |
-| `NODE_VERSION` | `20` |
+| `NODE_VERSION` | `22` |
 
 5. Under **Settings → Builds**, set **Production branch** to `main` — every push to `main` triggers a new build and deploy.
 
@@ -113,7 +113,7 @@ If using GitHub Actions to deploy, disable Cloudflare’s automatic Git builds t
 If the build succeeds but deploy fails with `opennextjs-cloudflare` or `pages-manifest.json` missing:
 
 - Your project is trying to deploy as a **Worker** instead of static **Pages**
-- **Remove** any deploy command like `npx wrangler deploy`
+- **Replace** `npx wrangler deploy` with `npm run pages:deploy` (or clear the deploy command entirely)
 - Set build output directory to `out` (not `.next`)
 - Do **not** use the OpenNext / `@opennextjs/cloudflare` adapter — this repo does not need it
 
