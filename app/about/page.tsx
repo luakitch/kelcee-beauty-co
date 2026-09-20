@@ -31,15 +31,14 @@ export default function AboutPage() {
               Hi, I&apos;m Kelcee!
             </h2>
             <p className="leading-relaxed text-charcoal/75">
-              I started {siteConfig.name} because I believe every client deserves
-              to leave the chair feeling confident and like themselves. My
-              focus is lived-in color and styles that look great and are easy to
-              maintain at home.
+              I started {siteConfig.name} to offer cuts, color, styling,
+              extensions, lashes, and brows right here in Logansport. Whether
+              you need a fresh cut, balayage, a lash lift, or a brow wax — you
+              can book everything online.
             </p>
             <p className="leading-relaxed text-charcoal/75">
-              With years of experience behind the chair, I&apos;ve built a space
-              that&apos;s warm and welcoming — good conversation, honest advice,
-              and results you can count on.
+              The studio is at 1030 N Third St. I focus on looks that fit your
+              day-to-day life and hold up between appointments.
             </p>
             <p className="leading-relaxed text-charcoal/75">
               When I&apos;m not doing hair, you&apos;ll find me staying on top of

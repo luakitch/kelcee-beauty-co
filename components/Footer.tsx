@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { BrandLogo } from "@/components/BrandLogo";
-import { navLinks, siteConfig } from "@/lib/site-config";
+import { getFullAddress, navLinks, siteConfig } from "@/lib/site-config";
 
 export function Footer() {
   return (
@@ -39,10 +39,10 @@ export function Footer() {
               Visit Us
             </h3>
             <ul className="space-y-2 text-sm text-charcoal/70">
-              <li>{siteConfig.location}</li>
-              <li>{siteConfig.hours.weekdays}</li>
-              <li>{siteConfig.hours.saturday}</li>
-              <li>{siteConfig.hours.sunday}</li>
+              <li>{getFullAddress()}</li>
+              <li>Mon – Wed: {siteConfig.hours.monday}</li>
+              <li>Thu – Sat: {siteConfig.hours.thursday}</li>
+              <li>Sunday: {siteConfig.hours.sunday}</li>
             </ul>
             <a
               href={siteConfig.instagramUrl}
@@ -56,7 +56,18 @@ export function Footer() {
         </div>
 
         <div className="mt-10 border-t border-blush-200/60 pt-6 text-center text-xs text-charcoal/50">
-          © {new Date().getFullYear()} {siteConfig.name}. All rights reserved.
+          <p>© {new Date().getFullYear()} {siteConfig.name}. All rights reserved.</p>
+          <p className="mt-2">
+            Site by{" "}
+            <a
+              href="https://kitchelsoftware.com"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="transition hover:text-charcoal/70"
+            >
+              Kitchel Software
+            </a>
+          </p>
         </div>
       </div>
     </footer>

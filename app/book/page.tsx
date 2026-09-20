@@ -1,11 +1,11 @@
 import type { Metadata } from "next";
 import { BookButton } from "@/components/BookButton";
 import { PageHeader } from "@/components/PageHeader";
-import { siteConfig } from "@/lib/site-config";
+import { getFullAddress, siteConfig } from "@/lib/site-config";
 
 export const metadata: Metadata = {
   title: "Book",
-  description: `Book an appointment with ${siteConfig.name} in ${siteConfig.location}.`,
+  description: `Book an appointment with ${siteConfig.name} at ${getFullAddress()}.`,
 };
 
 export default function BookPage() {
@@ -13,20 +13,20 @@ export default function BookPage() {
     <>
       <PageHeader
         title="Book an Appointment"
-        description="Choose your service and pick a time that works for you. Appointments are confirmed through Square."
+        description="Choose your service and pick a time online through Square."
       />
 
       <section className="mx-auto max-w-3xl px-4 pb-16 sm:px-6 sm:pb-20">
         <div className="rounded-2xl border border-blush-200 bg-white/80 p-8 text-center shadow-sm sm:p-12">
           <p className="text-sm font-medium uppercase tracking-[0.2em] text-blush-500">
-            {siteConfig.location}
+            {getFullAddress()}
           </p>
           <h2 className="mt-4 font-display text-3xl font-semibold text-charcoal">
             Ready to get on the books?
           </h2>
           <p className="mx-auto mt-4 max-w-md leading-relaxed text-charcoal/70">
-            You&apos;ll be taken to our secure Square booking page to pick a
-            service, date, and time. It only takes a few minutes.
+            You&apos;ll be taken to our Square booking page to pick a service,
+            date, and time.
           </p>
           <div className="mt-8">
             <BookButton size="lg" />
@@ -48,15 +48,44 @@ export default function BookPage() {
           </p>
         </div>
 
-        <div className="mt-10 rounded-2xl border border-blush-200 bg-blush-50/50 p-8">
-          <h2 className="font-display text-xl font-semibold text-charcoal">
-            Booking policy
-          </h2>
-          <p className="mt-3 text-sm leading-relaxed text-charcoal/70">
-            A deposit may be required for color services — details are shown
-            during booking. Please arrive 10 minutes early and let us know at
-            least 24 hours in advance if you need to reschedule.
-          </p>
+        <div className="mt-10 space-y-6">
+          <div className="rounded-2xl border border-blush-200 bg-blush-50/50 p-8">
+            <h2 className="font-display text-xl font-semibold text-charcoal">
+              Deposit policy
+            </h2>
+            <p className="mt-3 text-sm leading-relaxed text-charcoal/70">
+              {siteConfig.bookingPolicies.deposit}
+            </p>
+            <p className="mt-3 text-sm leading-relaxed text-charcoal/70">
+              {siteConfig.bookingPolicies.depositRefund}
+            </p>
+          </div>
+
+          <div className="rounded-2xl border border-blush-200 bg-blush-50/50 p-8">
+            <h2 className="font-display text-xl font-semibold text-charcoal">
+              Cancellation policy
+            </h2>
+            <ul className="mt-3 space-y-2 text-sm leading-relaxed text-charcoal/70">
+              {siteConfig.bookingPolicies.cancellation.map((line) => (
+                <li key={line}>• {line}</li>
+              ))}
+            </ul>
+          </div>
+
+          <div className="rounded-2xl border border-blush-200 bg-blush-50/50 p-8">
+            <h2 className="font-display text-xl font-semibold text-charcoal">
+              Hours
+            </h2>
+            <ul className="mt-3 space-y-1 text-sm text-charcoal/70">
+              <li>Monday: {siteConfig.hours.monday}</li>
+              <li>Tuesday: {siteConfig.hours.tuesday}</li>
+              <li>Wednesday: {siteConfig.hours.wednesday}</li>
+              <li>Thursday: {siteConfig.hours.thursday}</li>
+              <li>Friday: {siteConfig.hours.friday}</li>
+              <li>Saturday: {siteConfig.hours.saturday}</li>
+              <li>Sunday: {siteConfig.hours.sunday}</li>
+            </ul>
+          </div>
         </div>
       </section>
     </>

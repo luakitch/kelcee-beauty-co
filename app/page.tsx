@@ -4,10 +4,10 @@ import { BowDivider } from "@/components/BowAccent";
 import { GalleryGrid } from "@/components/GalleryGrid";
 import { Hero } from "@/components/Hero";
 import { ServiceCard } from "@/components/ServiceCard";
-import { services } from "@/lib/site-config";
+import { getFeaturedServices } from "@/lib/site-config";
 
 export default function HomePage() {
-  const featuredServices = services.slice(0, 3);
+  const featuredServices = getFeaturedServices().slice(0, 3);
 
   return (
     <>
@@ -19,8 +19,8 @@ export default function HomePage() {
             Our Services
           </h2>
           <p className="mx-auto mt-3 max-w-xl text-charcoal/70">
-            From cuts and color to special occasion styling — every service is
-            tailored to you.
+            Cuts, color, styling, lashes, brows, and more — see full pricing on
+            our services page.
           </p>
           <BowDivider className="mt-6" />
         </div>
