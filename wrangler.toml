@@ -1,10 +1,16 @@
 # Cloudflare Pages — static Next.js export (output: "export" → out/)
 #
 # Cloudflare dashboard build settings:
-#   Build command:  npm run build
-#   Output dir:     out
-#   Deploy command: npm run deploy  (or leave empty)
+#   Build command:     npm run build
+#   Output dir:        out
+#   Deploy command:    npm run deploy  (or leave empty)
+#   Production branch: main
 #   Do NOT use: npx wrangler deploy
+#
+# Branch workflow (no extra env vars):
+#   main    → kelceehairco.com + production workers.dev → coming soon
+#   staging → *-kelcee-beauty-co.*.workers.dev preview URL → full site
+#   Copy the preview URL from Deployments after pushing to staging.
 #
 name = "kelcee-beauty-co"
 compatibility_date = "2024-09-23"
