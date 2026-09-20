@@ -1,6 +1,7 @@
 const DEFAULT_ADMIN_EMAILS = [
   "kitchelsoftware@gmail.com",
-  "hello@kelceebeautyco.com",
+  "kelcee05@icloud.com",
+  "mkenzie2000@hotmail.com",
 ] as const;
 
 function parseEmailList(value: string): string[] {

@@ -46,6 +46,43 @@ export async function signOut(): Promise<void> {
   await supabase.auth.signOut();
 }
 
+export function isInviteOrRecoveryLink(): boolean {
+  if (typeof window === "undefined") return false;
+
+  const hash = window.location.hash;
+  return (
+    hash.includes("type=invite") ||
+    hash.includes("type=recovery") ||
+    hash.includes("type=signup")
+  );
+}
+
+export function clearAuthHashFromUrl(): void {
+  if (typeof window === "undefined") return;
+  window.history.replaceState({}, "", window.location.pathname);
+}
+
+export async function setPassword(
+  password: string,
+): Promise<{ error: string | null }> {
+  const supabase = getSupabaseClient();
+  if (!supabase) {
+    return { error: "Supabase is not configured." };
+  }
+
+  const { data, error } = await supabase.auth.updateUser({ password });
+  if (error) {
+    return { error: error.message };
+  }
+
+  if (!isAdminUser(data.user)) {
+    await supabase.auth.signOut();
+    return { error: "This account is not authorized for admin access." };
+  }
+
+  return { error: null };
+}
+
 export function onAuthStateChange(
   callback: (session: Session | null) => void,
 ): () => void {
