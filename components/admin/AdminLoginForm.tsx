@@ -5,7 +5,11 @@ import { useRouter } from "next/navigation";
 import { BrandLogo } from "@/components/BrandLogo";
 import { signInWithPassword } from "@/lib/supabase/auth";
 
-export function AdminLoginForm() {
+type AdminLoginFormProps = {
+  onForgotPassword?: () => void;
+};
+
+export function AdminLoginForm({ onForgotPassword }: AdminLoginFormProps) {
   const router = useRouter();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -93,6 +97,16 @@ export function AdminLoginForm() {
             {loading ? "Signing in..." : "Sign in"}
           </button>
         </form>
+
+        {onForgotPassword && (
+          <button
+            type="button"
+            onClick={onForgotPassword}
+            className="mt-6 w-full text-sm font-medium text-blush-600 transition hover:text-blush-700"
+          >
+            Forgot your password?
+          </button>
+        )}
       </div>
     </div>
   );

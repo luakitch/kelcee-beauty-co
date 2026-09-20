@@ -1,5 +1,6 @@
 import type { Session, User } from "@supabase/supabase-js";
 import { isAdminEmail } from "@/lib/supabase/admin-emails";
+import { getAdminAcceptInviteUrl } from "@/lib/site-url";
 import { getSupabaseClient } from "@/lib/supabase/client";
 
 export function isAdminUser(user: User | null | undefined): boolean {
@@ -46,20 +47,52 @@ export async function signOut(): Promise<void> {
   await supabase.auth.signOut();
 }
 
-export function isInviteOrRecoveryLink(): boolean {
-  if (typeof window === "undefined") return false;
+function getAuthHashType(): string | null {
+  if (typeof window === "undefined") return null;
 
-  const hash = window.location.hash;
-  return (
-    hash.includes("type=invite") ||
-    hash.includes("type=recovery") ||
-    hash.includes("type=signup")
-  );
+  const match = window.location.hash.match(/type=([^&]+)/);
+  return match?.[1] ?? null;
+}
+
+export function isInviteOrRecoveryLink(): boolean {
+  const type = getAuthHashType();
+  return type === "invite" || type === "recovery" || type === "signup";
+}
+
+export function isRecoveryLink(): boolean {
+  return getAuthHashType() === "recovery";
 }
 
 export function clearAuthHashFromUrl(): void {
   if (typeof window === "undefined") return;
   window.history.replaceState({}, "", window.location.pathname);
+}
+
+export async function requestPasswordReset(
+  email: string,
+): Promise<{ error: string | null; sent: boolean }> {
+  const supabase = getSupabaseClient();
+  if (!supabase) {
+    return { error: "Supabase is not configured.", sent: false };
+  }
+
+  const trimmed = email.trim().toLowerCase();
+  if (!isAdminEmail(trimmed)) {
+    return {
+      error: "That email is not authorized for admin access.",
+      sent: false,
+    };
+  }
+
+  const { error } = await supabase.auth.resetPasswordForEmail(trimmed, {
+    redirectTo: getAdminAcceptInviteUrl(),
+  });
+
+  if (error) {
+    return { error: error.message, sent: false };
+  }
+
+  return { error: null, sent: true };
 }
 
 export async function setPassword(

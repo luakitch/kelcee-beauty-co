@@ -58,7 +58,8 @@ Alternatively create a user with a temporary password and **Auto confirm user** 
 | Route | Purpose |
 |---|---|
 | `/admin` | Sign in for existing admins |
-| `/admin/accept-invite` | Branded set-password page for invite links |
+| `/admin` → Forgot your password? | Request a reset email (admin emails only) |
+| `/admin/accept-invite` | Branded set-password page for invite & reset links |
 | `/admin/dashboard` | Gallery CMS (requires login) |
 
 The set-password page uses your site styling (logo, blush theme) — not Supabase’s generic hosted page.

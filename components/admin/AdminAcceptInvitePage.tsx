@@ -8,6 +8,7 @@ import {
   getSession,
   isAdminUser,
   isInviteOrRecoveryLink,
+  isRecoveryLink,
   onAuthStateChange,
 } from "@/lib/supabase/auth";
 
@@ -15,12 +16,15 @@ export function AdminAcceptInvitePage() {
   const router = useRouter();
   const [checkingSession, setCheckingSession] = useState(true);
   const [needsPassword, setNeedsPassword] = useState(false);
+  const [isRecovery, setIsRecovery] = useState(false);
 
   useEffect(() => {
     if (!isInviteOrRecoveryLink()) {
       router.replace("/admin");
       return;
     }
+
+    setIsRecovery(isRecoveryLink());
 
     let cancelled = false;
 
@@ -95,7 +99,14 @@ export function AdminAcceptInvitePage() {
 
   return (
     <div className="flex min-h-screen items-center justify-center bg-gradient-to-b from-blush-50 via-cream to-cream px-4 py-12">
-      <AdminSetPasswordForm />
+      <AdminSetPasswordForm
+        title={isRecovery ? "Set a new password" : "Create your password"}
+        description={
+          isRecovery
+            ? "Choose a new password for your Kelcee Beauty Co. admin account."
+            : "Set a password to finish activating your Kelcee Beauty Co. admin account."
+        }
+      />
     </div>
   );
 }
