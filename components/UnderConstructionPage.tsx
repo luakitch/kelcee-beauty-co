@@ -34,7 +34,7 @@ export function UnderConstructionPage() {
           soft color, sweet styles, and salon magic.
         </p>
 
-        <div className="mt-10 flex flex-col items-center justify-center gap-4 sm:flex-row">
+        <div className="mt-10">
           <a
             href={siteConfig.instagramUrl}
             target="_blank"
@@ -42,12 +42,6 @@ export function UnderConstructionPage() {
             className="inline-flex items-center justify-center rounded-full bg-blush-500 px-8 py-3.5 text-sm font-semibold text-white shadow-md transition hover:bg-blush-600 hover:shadow-lg"
           >
             Follow on Instagram
-          </a>
-          <a
-            href={`mailto:${siteConfig.email}`}
-            className="inline-flex items-center justify-center rounded-full border-2 border-blush-300 bg-white/60 px-8 py-3.5 text-sm font-medium text-blush-600 transition hover:border-blush-400 hover:bg-white"
-          >
-            Get in touch
           </a>
         </div>
 

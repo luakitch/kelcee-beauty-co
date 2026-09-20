@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import Link from "next/link";
 import { BookButton } from "@/components/BookButton";
 import { PageHeader } from "@/components/PageHeader";
 import { siteConfig } from "@/lib/site-config";
@@ -37,20 +36,13 @@ export default function BookPage() {
         <div className="mt-10 rounded-2xl border border-blush-200/80 bg-blush-50/50 p-6 text-center">
           <p className="text-sm text-charcoal/70">
             Have questions before you book?{" "}
-            <Link
-              href="/contact"
-              className="font-medium text-blush-600 transition hover:text-blush-700"
-            >
-              Contact us
-            </Link>{" "}
-            or{" "}
             <a
               href={siteConfig.instagramUrl}
               target="_blank"
               rel="noopener noreferrer"
               className="font-medium text-blush-600 transition hover:text-blush-700"
             >
-              message us on Instagram
+              Message us on Instagram
             </a>
             .
           </p>

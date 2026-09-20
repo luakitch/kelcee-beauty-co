@@ -13,8 +13,6 @@ export const siteConfig = {
   instagramUrl:
     process.env.NEXT_PUBLIC_INSTAGRAM_URL ??
     "https://instagram.com/kelceebeautyco",
-  email: "hello@kelceebeautyco.com",
-  phone: "(555) 123-4567",
   location: "Logansport, IN",
   hours: {
     weekdays: "Tuesday – Friday: 10am – 6pm",
@@ -29,7 +27,6 @@ export const navLinks = [
   { href: "/gallery", label: "Gallery" },
   { href: "/about", label: "About" },
   { href: "/book", label: "Book" },
-  { href: "/contact", label: "Contact" },
 ] as const;
 
 export const services = [
