@@ -1,15 +1,12 @@
 "use client";
 
+import Link from "next/link";
 import { FormEvent, useState } from "react";
 import { useRouter } from "next/navigation";
 import { BrandLogo } from "@/components/BrandLogo";
 import { signInWithPassword } from "@/lib/supabase/auth";
 
-type AdminLoginFormProps = {
-  onForgotPassword?: () => void;
-};
-
-export function AdminLoginForm({ onForgotPassword }: AdminLoginFormProps) {
+export function AdminLoginForm() {
   const router = useRouter();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -66,12 +63,20 @@ export function AdminLoginForm({ onForgotPassword }: AdminLoginFormProps) {
           </div>
 
           <div>
-            <label
-              htmlFor="password"
-              className="mb-2 block text-sm font-medium text-charcoal"
-            >
-              Password
-            </label>
+            <div className="mb-2 flex items-center justify-between gap-3">
+              <label
+                htmlFor="password"
+                className="block text-sm font-medium text-charcoal"
+              >
+                Password
+              </label>
+              <Link
+                href="/admin/forgot-password"
+                className="text-xs font-medium text-blush-600 transition hover:text-blush-700"
+              >
+                Forgot password?
+              </Link>
+            </div>
             <input
               id="password"
               type="password"
@@ -97,16 +102,6 @@ export function AdminLoginForm({ onForgotPassword }: AdminLoginFormProps) {
             {loading ? "Signing in..." : "Sign in"}
           </button>
         </form>
-
-        {onForgotPassword && (
-          <button
-            type="button"
-            onClick={onForgotPassword}
-            className="mt-6 w-full text-sm font-medium text-blush-600 transition hover:text-blush-700"
-          >
-            Forgot your password?
-          </button>
-        )}
       </div>
     </div>
   );

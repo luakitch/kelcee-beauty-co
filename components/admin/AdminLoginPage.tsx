@@ -3,7 +3,6 @@
 import { useEffect, useState } from "react";
 import type { Session } from "@supabase/supabase-js";
 import { useRouter } from "next/navigation";
-import { AdminForgotPasswordForm } from "@/components/admin/AdminForgotPasswordForm";
 import { AdminLoginForm } from "@/components/admin/AdminLoginForm";
 import {
   getSession,
@@ -14,8 +13,6 @@ import {
 export function AdminLoginPage() {
   const router = useRouter();
   const [checkingSession, setCheckingSession] = useState(true);
-  const [showForgotPassword, setShowForgotPassword] = useState(false);
-
   useEffect(() => {
     function handleSession(session: Session | null) {
       if (session && isAdminUser(session.user)) {
@@ -40,13 +37,7 @@ export function AdminLoginPage() {
 
   return (
     <div className="flex min-h-screen items-center justify-center bg-gradient-to-b from-blush-50 via-cream to-cream px-4 py-12">
-      {showForgotPassword ? (
-        <AdminForgotPasswordForm onBack={() => setShowForgotPassword(false)} />
-      ) : (
-        <AdminLoginForm
-          onForgotPassword={() => setShowForgotPassword(true)}
-        />
-      )}
+      <AdminLoginForm />
     </div>
   );
 }

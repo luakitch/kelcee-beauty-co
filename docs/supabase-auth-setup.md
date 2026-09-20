@@ -58,7 +58,8 @@ Alternatively create a user with a temporary password and **Auto confirm user** 
 | Route | Purpose |
 |---|---|
 | `/admin` | Sign in for existing admins |
-| `/admin` → Forgot your password? | Request a reset email (admin emails only) |
+| `/admin/forgot-password` | Request a reset email (admin emails only) |
+| `/admin/change-password` | Change password while signed in (dashboard header link) |
 | `/admin/accept-invite` | Branded set-password page for invite & reset links |
 | `/admin/dashboard` | Gallery CMS (requires login) |
 

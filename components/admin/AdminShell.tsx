@@ -1,9 +1,10 @@
 "use client";
 
 import Link from "next/link";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { BrandLogo } from "@/components/BrandLogo";
-import { signOut } from "@/lib/supabase/auth";
+import { getSession, signOut } from "@/lib/supabase/auth";
 
 type AdminShellProps = {
   title: string;
@@ -12,6 +13,13 @@ type AdminShellProps = {
 
 export function AdminShell({ title, children }: AdminShellProps) {
   const router = useRouter();
+  const [signedInEmail, setSignedInEmail] = useState<string | null>(null);
+
+  useEffect(() => {
+    getSession().then((session) => {
+      setSignedInEmail(session?.user.email ?? null);
+    });
+  }, []);
 
   async function handleSignOut() {
     await signOut();
@@ -33,6 +41,18 @@ export function AdminShell({ title, children }: AdminShellProps) {
           </Link>
 
           <div className="flex items-center gap-3">
+            {signedInEmail && (
+              <p className="hidden text-xs text-charcoal/60 md:block">
+                Signed in as{" "}
+                <span className="font-medium text-charcoal">{signedInEmail}</span>
+              </p>
+            )}
+            <Link
+              href="/admin/change-password"
+              className="hidden rounded-full border border-blush-300 px-4 py-2 text-xs font-medium text-charcoal transition hover:bg-blush-50 sm:inline-flex"
+            >
+              Change password
+            </Link>
             <Link
               href="/gallery"
               className="hidden rounded-full border border-blush-300 px-4 py-2 text-xs font-medium text-charcoal transition hover:bg-blush-50 sm:inline-flex"

@@ -1,14 +1,19 @@
 "use client";
 
+import Link from "next/link";
 import { FormEvent, useState } from "react";
 import { BrandLogo } from "@/components/BrandLogo";
 import { requestPasswordReset } from "@/lib/supabase/auth";
 
 type AdminForgotPasswordFormProps = {
-  onBack: () => void;
+  backHref?: string;
+  backLabel?: string;
+  onBack?: () => void;
 };
 
 export function AdminForgotPasswordForm({
+  backHref = "/admin",
+  backLabel = "← Back to sign in",
   onBack,
 }: AdminForgotPasswordFormProps) {
   const [email, setEmail] = useState("");
@@ -30,6 +35,22 @@ export function AdminForgotPasswordForm({
     }
 
     setSent(true);
+  }
+
+  function BackControl({ className }: { className: string }) {
+    if (onBack) {
+      return (
+        <button type="button" onClick={onBack} className={className}>
+          {backLabel}
+        </button>
+      );
+    }
+
+    return (
+      <Link href={backHref} className={className}>
+        {backLabel}
+      </Link>
+    );
   }
 
   return (
@@ -55,13 +76,7 @@ export function AdminForgotPasswordForm({
               The link goes to the admin set-password page. Check spam if you
               don&apos;t see it within a few minutes.
             </p>
-            <button
-              type="button"
-              onClick={onBack}
-              className="w-full rounded-full border border-blush-300 px-6 py-3 text-sm font-medium text-charcoal transition hover:bg-blush-50"
-            >
-              Back to sign in
-            </button>
+            <BackControl className="flex w-full items-center justify-center rounded-full border border-blush-300 px-6 py-3 text-sm font-medium text-charcoal transition hover:bg-blush-50" />
           </div>
         ) : (
           <>
@@ -104,13 +119,7 @@ export function AdminForgotPasswordForm({
               </button>
             </form>
 
-            <button
-              type="button"
-              onClick={onBack}
-              className="mt-6 w-full text-sm font-medium text-blush-600 transition hover:text-blush-700"
-            >
-              ← Back to sign in
-            </button>
+            <BackControl className="mt-6 block w-full text-center text-sm font-medium text-blush-600 transition hover:text-blush-700" />
           </>
         )}
       </div>
