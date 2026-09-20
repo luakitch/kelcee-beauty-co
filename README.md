@@ -63,7 +63,7 @@ This site is a **static export** (`output: "export"` → `out/`). Use **Cloudfla
 | Framework preset | None (or Next.js Static HTML Export) |
 | Build command | `npm run build` |
 | Build output directory | `out` |
-| **Deploy command** | **Leave empty** — Cloudflare publishes `out/` automatically after the build |
+| **Deploy command** | `npm run deploy` (or leave empty) — **not** `npx wrangler deploy` |
 | Node version | `22` (matches `.node-version`; or set env var `NODE_VERSION=22`) |
 
 4. Add environment variables in **Settings → Environment variables** (Production):
@@ -85,9 +85,9 @@ That's it — **every push to `main` automatically triggers a Cloudflare build a
 
 If the build succeeds but deploy fails:
 
-- **Remove** any deploy command like `npx wrangler deploy` — that is for Workers, not this static site
-- Leave the deploy command **empty** so Cloudflare publishes the `out/` folder after `npm run build`
-- If your project requires a deploy command, use `npm run pages:deploy` instead
+- Cloudflare may auto-fill `npx wrangler deploy` — **change it to `npm run deploy`**
+- Or leave the deploy command **empty** so Cloudflare publishes `out/` after the build
+- `wrangler.toml` includes an `[assets]` fallback if `npx wrangler deploy` cannot be removed yet
 - Set build output directory to `out` (not `.next`)
 - Do **not** use OpenNext / `@opennextjs/cloudflare` — this repo uses static export only
 
