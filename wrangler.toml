@@ -3,7 +3,7 @@
 # Cloudflare dashboard build settings:
 #   Build command:  npm run build
 #   Output dir:     out
-#   Deploy command: npm run pages:deploy   (NOT `npx wrangler deploy`)
+#   Deploy command: (leave empty) — NOT `npx wrangler deploy`
 #
 name = "kelcee-beauty-co"
 compatibility_date = "2024-09-23"

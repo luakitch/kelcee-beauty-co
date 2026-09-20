@@ -63,7 +63,7 @@ This site is a **static export** (`output: "export"` → `out/`). Use **Cloudfla
 | Framework preset | None (or Next.js Static HTML Export) |
 | Build command | `npm run build` |
 | Build output directory | `out` |
-| **Deploy command** | `npm run pages:deploy` (or leave empty if Cloudflare auto-publishes `out/`) |
+| **Deploy command** | **Leave empty** — Cloudflare publishes `out/` automatically after the build |
 | Node version | `22` (matches `.node-version`; or set env var `NODE_VERSION=22`) |
 
 4. Add environment variables in **Settings → Environment variables** (Production):
@@ -77,45 +77,19 @@ This site is a **static export** (`output: "export"` → `out/`). Use **Cloudfla
 | `NEXT_PUBLIC_INSTAGRAM_URL` | Instagram profile URL |
 | `NODE_VERSION` | `22` |
 
-5. Under **Settings → Builds**, set **Production branch** to `main` — every push to `main` triggers a new build and deploy.
+5. Under **Settings → Builds**, set **Production branch** to `main`.
 
-### Auto deploy on push to `main`
-
-You can use **either** (or both) of these:
-
-**Option A — Cloudflare Git integration (simplest)**  
-Once the repo is connected and production branch is `main`, Cloudflare builds and deploys automatically on every push. No GitHub Actions secrets required.
-
-**Option B — GitHub Actions (recommended if Cloudflare auto-detects Workers/OpenNext)**  
-This repo includes [`.github/workflows/deploy.yml`](.github/workflows/deploy.yml), which builds and runs:
-
-```bash
-wrangler pages deploy out --project-name=kelcee-beauty-co
-```
-
-Add these **GitHub repository secrets** (Settings → Secrets and variables → Actions):
-
-| Secret | Where to get it |
-|---|---|
-| `CLOUDFLARE_API_TOKEN` | Cloudflare → My Profile → API Tokens → Create Token → **Edit Cloudflare Workers** template (includes Pages) |
-| `CLOUDFLARE_ACCOUNT_ID` | Cloudflare dashboard URL or **Workers & Pages** overview |
-| `NEXT_PUBLIC_SUPABASE_URL` | Supabase project URL |
-| `NEXT_PUBLIC_SUPABASE_ANON_KEY` | Supabase publishable key |
-| `NEXT_PUBLIC_ADMIN_EMAILS` | Admin email list |
-| `NEXT_PUBLIC_INSTAGRAM_URL` | Instagram URL |
-
-If using GitHub Actions to deploy, disable Cloudflare’s automatic Git builds to avoid double deploys (**Settings → Builds → disconnect** or pause Git integration).
-
-[`.github/workflows/build.yml`](.github/workflows/build.yml) also runs a build check on every push and pull request to `main`.
+That's it — **every push to `main` automatically triggers a Cloudflare build and deploy.** No GitHub Actions or extra CI setup required.
 
 ### Deploy troubleshooting
 
-If the build succeeds but deploy fails with `opennextjs-cloudflare` or `pages-manifest.json` missing:
+If the build succeeds but deploy fails:
 
-- Your project is trying to deploy as a **Worker** instead of static **Pages**
-- **Replace** `npx wrangler deploy` with `npm run pages:deploy` (or clear the deploy command entirely)
+- **Remove** any deploy command like `npx wrangler deploy` — that is for Workers, not this static site
+- Leave the deploy command **empty** so Cloudflare publishes the `out/` folder after `npm run build`
+- If your project requires a deploy command, use `npm run pages:deploy` instead
 - Set build output directory to `out` (not `.next`)
-- Do **not** use the OpenNext / `@opennextjs/cloudflare` adapter — this repo does not need it
+- Do **not** use OpenNext / `@opennextjs/cloudflare` — this repo uses static export only
 
 The repo includes `wrangler.toml` with `pages_build_output_dir = "out"` to guide Cloudflare Pages.
 
