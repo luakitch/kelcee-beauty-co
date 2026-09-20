@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import type { Session } from "@supabase/supabase-js";
 import { useRouter } from "next/navigation";
 import { AdminSetPasswordForm } from "@/components/admin/AdminSetPasswordForm";
 import {
