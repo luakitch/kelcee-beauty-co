@@ -21,7 +21,13 @@ export function BowAccent({ className = "", size = 48 }: BowAccentProps) {
       />
       <circle cx="24" cy="24" r="3" fill="currentColor" />
       <path
-        d="M24 24V36"
+        d="M22 25L20 38"
+        stroke="currentColor"
+        strokeWidth="2"
+        strokeLinecap="round"
+      />
+      <path
+        d="M26 25L28 38"
         stroke="currentColor"
         strokeWidth="2"
         strokeLinecap="round"
