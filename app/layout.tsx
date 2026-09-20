@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import { Cormorant_Garamond, Nunito } from "next/font/google";
-import { Footer } from "@/components/Footer";
-import { Header } from "@/components/Header";
+import { SiteChrome } from "@/components/SiteChrome";
 import { siteConfig } from "@/lib/site-config";
 import "./globals.css";
 
@@ -23,6 +22,10 @@ export const metadata: Metadata = {
     template: `%s | ${siteConfig.name}`,
   },
   description: siteConfig.description,
+  icons: {
+    icon: siteConfig.logo.src,
+    apple: siteConfig.logo.src,
+  },
 };
 
 export default function RootLayout({
@@ -35,9 +38,7 @@ export default function RootLayout({
       <body
         className={`${cormorant.variable} ${nunito.variable} flex min-h-screen flex-col antialiased`}
       >
-        <Header />
-        <main className="flex-1">{children}</main>
-        <Footer />
+        <SiteChrome>{children}</SiteChrome>
       </body>
     </html>
   );

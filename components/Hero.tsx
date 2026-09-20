@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { BookButton } from "@/components/BookButton";
 import { BowAccent } from "@/components/BowAccent";
+import { BrandLogo } from "@/components/BrandLogo";
 import { siteConfig } from "@/lib/site-config";
 
 export function Hero() {
@@ -20,6 +21,9 @@ export function Hero() {
       />
 
       <div className="relative mx-auto max-w-3xl text-center">
+        <div className="mb-6 flex justify-center">
+          <BrandLogo size="hero" showName={false} />
+        </div>
         <p className="mb-4 text-sm font-medium uppercase tracking-[0.2em] text-blush-500">
           Welcome, beautiful
         </p>

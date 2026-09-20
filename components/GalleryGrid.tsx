@@ -85,13 +85,13 @@ export function GalleryGrid({ limit, showCaptions = true }: GalleryGridProps) {
   return (
     <div className="grid grid-cols-2 gap-4 md:grid-cols-3 lg:gap-6">
       {images.map((image) => {
-        const url = getGalleryImageUrl(image.storage_path);
+        const url = getGalleryImageUrl(image.storage_path, image.bucket_id);
         return (
           <figure
             key={image.id}
-            className="group overflow-hidden rounded-2xl bg-blush-50 shadow-sm"
+            className="group overflow-hidden rounded-2xl border border-blush-200/80 bg-white/70 shadow-sm transition hover:border-blush-300 hover:shadow-md"
           >
-            <div className="aspect-[3/4] overflow-hidden">
+            <div className="aspect-[3/4] overflow-hidden bg-blush-50">
               {url ? (
                 // eslint-disable-next-line @next/next/no-img-element
                 <img
@@ -106,8 +106,10 @@ export function GalleryGrid({ limit, showCaptions = true }: GalleryGridProps) {
               )}
             </div>
             {showCaptions && image.caption && (
-              <figcaption className="px-4 py-3 text-sm text-charcoal/70">
-                {image.caption}
+              <figcaption className="border-t border-blush-200/70 bg-gradient-to-b from-white to-blush-50/80 px-5 py-4 text-center">
+                <p className="font-display text-base font-medium leading-snug tracking-wide text-charcoal/90 sm:text-lg">
+                  {image.caption}
+                </p>
               </figcaption>
             )}
           </figure>

@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { BowAccent } from "@/components/BowAccent";
+import { BrandLogo } from "@/components/BrandLogo";
 import { navLinks, siteConfig } from "@/lib/site-config";
 
 export function Footer() {
@@ -8,11 +8,8 @@ export function Footer() {
       <div className="mx-auto max-w-6xl px-4 py-12 sm:px-6">
         <div className="grid gap-10 sm:grid-cols-2 lg:grid-cols-3">
           <div>
-            <div className="mb-4 flex items-center gap-2">
-              <BowAccent size={24} className="text-blush-400" />
-              <span className="font-display text-lg font-semibold text-charcoal">
-                {siteConfig.name}
-              </span>
+            <div className="mb-4">
+              <BrandLogo size="md" showName={false} />
             </div>
             <p className="text-sm leading-relaxed text-charcoal/70">
               {siteConfig.tagline}

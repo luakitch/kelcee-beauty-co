@@ -1,8 +1,13 @@
 import { createClient, SupabaseClient } from "@supabase/supabase-js";
+import {
+  getGalleryBucket,
+  type GalleryBucketName,
+} from "@/lib/supabase/gallery-bucket";
 
 export type GalleryImage = {
   id: string;
   storage_path: string;
+  bucket_id: GalleryBucketName;
   caption: string | null;
   sort_order: number;
   created_at: string;
@@ -25,11 +30,14 @@ export function getSupabaseClient(): SupabaseClient | null {
   return supabaseClient;
 }
 
-export function getGalleryImageUrl(storagePath: string): string | null {
+export function getGalleryImageUrl(
+  storagePath: string,
+  bucketId: GalleryBucketName = getGalleryBucket(),
+): string | null {
   const supabase = getSupabaseClient();
   if (!supabase) return null;
 
-  const { data } = supabase.storage.from("gallery").getPublicUrl(storagePath);
+  const { data } = supabase.storage.from(bucketId).getPublicUrl(storagePath);
   return data.publicUrl;
 }
 
@@ -37,9 +45,12 @@ export async function fetchGalleryImages(): Promise<GalleryImage[]> {
   const supabase = getSupabaseClient();
   if (!supabase) return [];
 
+  const bucketId = getGalleryBucket();
+
   const { data, error } = await supabase
     .from("gallery_images")
     .select("*")
+    .eq("bucket_id", bucketId)
     .order("sort_order", { ascending: true });
 
   if (error || !data) return [];

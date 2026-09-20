@@ -1,5 +1,9 @@
 export const siteConfig = {
   name: "Kelcee Beauty Co.",
+  logo: {
+    src: "/logo.jpg",
+    alt: "Kelcee Beauty Co. — Hair, Lashes, Brows",
+  },
   tagline: "Soft color. Sweet styles. Salon magic.",
   description:
     "A boutique hair studio specializing in lived-in color, soft styling, and that perfect pink-pastel glow.",
