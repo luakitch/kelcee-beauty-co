@@ -1,0 +1,5 @@
+# Cloudflare Pages — static Next.js export (output: "export" → out/)
+# Do NOT use `npx wrangler deploy` or OpenNext for this project.
+name = "kelcee-beauty-co"
+compatibility_date = "2024-09-23"
+pages_build_output_dir = "out"
