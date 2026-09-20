@@ -14,7 +14,7 @@ export default function AboutPage() {
     <>
       <PageHeader
         title="About Kelcee"
-        description="The heart behind the chair — and the bows behind the brand."
+        description="Meet Kelcee and learn about the studio."
       />
 
       <section className="mx-auto max-w-6xl px-4 pb-16 sm:px-6 sm:pb-20">
@@ -32,20 +32,19 @@ export default function AboutPage() {
             </h2>
             <p className="leading-relaxed text-charcoal/75">
               I started {siteConfig.name} because I believe every client deserves
-              to feel beautiful, confident, and completely themselves when they
-              leave the chair. My specialty is soft, lived-in color and styles
-              that feel effortless — never overdone.
+              to leave the chair feeling confident and like themselves. My
+              focus is lived-in color and styles that look great and are easy to
+              maintain at home.
             </p>
             <p className="leading-relaxed text-charcoal/75">
               With years of experience behind the chair, I&apos;ve built a space
-              that&apos;s warm, welcoming, and a little bit pink. Think cozy
-              salon vibes with pretty details, good conversation, and hair
-              you&apos;ll actually love maintaining at home.
+              that&apos;s warm and welcoming — good conversation, honest advice,
+              and results you can count on.
             </p>
             <p className="leading-relaxed text-charcoal/75">
-              When I&apos;m not doing hair, you&apos;ll find me hunting for the
-              perfect bow accessory, scrolling hair inspo, or dreaming up new
-              color formulas. I can&apos;t wait to meet you!
+              When I&apos;m not doing hair, you&apos;ll find me staying on top of
+              new techniques and trends so I can bring fresh ideas to every
+              appointment. I look forward to meeting you!
             </p>
             <BookButton />
           </div>

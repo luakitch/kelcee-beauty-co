@@ -14,7 +14,7 @@ export default function GalleryPage() {
     <>
       <PageHeader
         title="Gallery"
-        description="Soft color, pretty details, and styles that make you feel like you. More photos added regularly."
+        description="Browse recent cuts, color, and styling work. More photos added regularly."
       />
 
       <section className="mx-auto max-w-6xl px-4 pb-16 sm:px-6 sm:pb-20">
@@ -25,8 +25,8 @@ export default function GalleryPage() {
             Love what you see?
           </h2>
           <p className="mx-auto mt-3 max-w-md text-charcoal/70">
-            Book an appointment and bring your inspo — let&apos;s create
-            something beautiful together.
+            Book an appointment and bring your inspiration photos — we&apos;ll
+            plan your look together.
           </p>
           <div className="mt-6">
             <BookButton />

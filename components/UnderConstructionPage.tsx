@@ -26,12 +26,12 @@ export function UnderConstructionPage() {
         </p>
 
         <h1 className="font-display text-4xl font-semibold text-charcoal sm:text-5xl">
-          Something beautiful is on the way
+          New website coming soon
         </h1>
 
         <p className="mx-auto mt-6 max-w-md text-lg leading-relaxed text-charcoal/75">
-          {siteConfig.name} is getting a fresh new home. Check back soon for
-          soft color, sweet styles, and salon magic.
+          {siteConfig.name} is getting a new home online. Check back soon, or
+          follow us on Instagram for updates.
         </p>
 
         <div className="mt-10">

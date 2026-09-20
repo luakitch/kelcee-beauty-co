@@ -4,9 +4,9 @@ export const siteConfig = {
     src: "/logo.jpg",
     alt: "Kelcee Beauty Co. — Hair, Lashes, Brows",
   },
-  tagline: "Soft color. Sweet styles. Salon magic.",
+  tagline: "Hair, lashes & brows in Logansport, IN.",
   description:
-    "A boutique hair studio specializing in lived-in color, soft styling, and that perfect pink-pastel glow.",
+    "Professional hair services — cuts, color, styling, and more.",
   bookingUrl:
     process.env.NEXT_PUBLIC_BOOKING_URL ??
     "https://book.squareup.com/appointments/1s5oteiurlqsjl/location/L4RM80YTMFAKH/services",
@@ -33,13 +33,13 @@ export const services = [
   {
     name: "Cut & Style",
     description:
-      "Precision cuts tailored to your face shape, finished with a soft blowout or effortless waves.",
+      "Precision cuts tailored to your face shape, finished with a blowout or styled finish.",
     price: "From $65",
   },
   {
     name: "Lived-In Color",
     description:
-      "Balayage, highlights, and root melts that grow out beautifully — never harsh, always dreamy.",
+      "Balayage, highlights, and root melts designed to grow out naturally.",
     price: "From $150",
   },
   {
@@ -51,7 +51,7 @@ export const services = [
   {
     name: "Special Occasion",
     description:
-      "Updos, soft curls, and styled looks for weddings, photoshoots, and your big moments.",
+      "Updos, curls, and styled looks for weddings, photoshoots, and special events.",
     price: "From $85",
   },
   {
@@ -63,7 +63,7 @@ export const services = [
   {
     name: "Consultation",
     description:
-      "Not sure where to start? Book a complimentary consult to chat color, cut, and vibe.",
+      "Not sure where to start? Book a complimentary consult to discuss your goals.",
     price: "Free",
   },
 ] as const;

@@ -19,7 +19,7 @@ export default function HomePage() {
             Our Services
           </h2>
           <p className="mx-auto mt-3 max-w-xl text-charcoal/70">
-            From soft balayage to special occasion styling — every service is
+            From cuts and color to special occasion styling — every service is
             tailored to you.
           </p>
           <BowDivider className="mt-6" />
@@ -48,8 +48,7 @@ export default function HomePage() {
               Recent Work
             </h2>
             <p className="mx-auto mt-3 max-w-xl text-charcoal/70">
-              A peek at the pretty pastels and soft styles coming out of the
-              chair.
+              Recent cuts, color, and styling from the chair.
             </p>
             <BowDivider className="mt-6" />
           </div>
@@ -69,10 +68,10 @@ export default function HomePage() {
 
       <section className="mx-auto max-w-3xl px-4 py-16 text-center sm:px-6 sm:py-20">
         <h2 className="font-display text-3xl font-semibold text-charcoal sm:text-4xl">
-          Ready for Your Glow-Up?
+          Ready to book?
         </h2>
         <p className="mt-4 text-lg text-charcoal/70">
-          Book online in just a few clicks. Can&apos;t wait to meet you!
+          Schedule your appointment online in just a few clicks.
         </p>
         <div className="mt-8">
           <BookButton size="lg" />

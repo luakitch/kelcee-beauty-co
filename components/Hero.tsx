@@ -25,14 +25,13 @@ export function Hero() {
           <BrandLogo size="hero" showName={false} />
         </div>
         <p className="mb-4 text-sm font-medium uppercase tracking-[0.2em] text-blush-500">
-          Welcome, beautiful
+          {siteConfig.location}
         </p>
         <h1 className="font-display text-4xl font-semibold leading-tight text-charcoal sm:text-5xl md:text-6xl">
           {siteConfig.name}
         </h1>
         <p className="mx-auto mt-6 max-w-xl text-lg leading-relaxed text-charcoal/75">
-          {siteConfig.tagline} Soft pastels, pretty details, and hair that feels
-          as good as it looks.
+          {siteConfig.description}
         </p>
         <div className="mt-10 flex flex-col items-center justify-center gap-4 sm:flex-row">
           <BookButton size="lg" />

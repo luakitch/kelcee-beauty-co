@@ -14,7 +14,7 @@ export default function ServicesPage() {
     <>
       <PageHeader
         title="Services"
-        description="Every service is customized to your hair, your vibe, and your lifestyle. Prices are starting points — final pricing depends on hair length and complexity."
+        description="Every service is customized to your hair and goals. Prices are starting points — final pricing depends on hair length and complexity."
       />
 
       <section className="mx-auto max-w-6xl px-4 pb-16 sm:px-6 sm:pb-20">
