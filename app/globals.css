@@ -1,0 +1,50 @@
+@import "tailwindcss";
+
+:root {
+  --background: #fff5f8;
+  --foreground: #3d2c33;
+  --cream: #fffbfc;
+  --blush-50: #fff5f8;
+  --blush-100: #ffe8f0;
+  --blush-200: #ffd6e8;
+  --blush-300: #f4afc8;
+  --blush-400: #e8a0bf;
+  --blush-500: #d4899a;
+  --blush-600: #c07588;
+  --blush-700: #a86174;
+  --rose-100: #fce4ec;
+  --rose-200: #f8bbd0;
+  --charcoal: #3d2c33;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-cream: var(--cream);
+  --color-blush-50: var(--blush-50);
+  --color-blush-100: var(--blush-100);
+  --color-blush-200: var(--blush-200);
+  --color-blush-300: var(--blush-300);
+  --color-blush-400: var(--blush-400);
+  --color-blush-500: var(--blush-500);
+  --color-blush-600: var(--blush-600);
+  --color-blush-700: var(--blush-700);
+  --color-rose-100: var(--rose-100);
+  --color-rose-200: var(--rose-200);
+  --color-charcoal: var(--charcoal);
+  --font-sans: var(--font-nunito);
+  --font-display: var(--font-cormorant);
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-nunito), system-ui, sans-serif;
+}
+
+h1,
+h2,
+h3,
+h4 {
+  font-family: var(--font-cormorant), Georgia, serif;
+}
