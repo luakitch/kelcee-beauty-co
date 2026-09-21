@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { BookButton } from "@/components/BookButton";
+import { HoursGrid } from "@/components/HoursGrid";
 import { PageHeader } from "@/components/PageHeader";
 import { getFullAddress, siteConfig } from "@/lib/site-config";
 
@@ -76,15 +77,9 @@ export default function BookPage() {
             <h2 className="font-display text-xl font-semibold text-charcoal">
               Hours
             </h2>
-            <ul className="mt-3 space-y-1 text-sm text-charcoal/70">
-              <li>Monday: {siteConfig.hours.monday}</li>
-              <li>Tuesday: {siteConfig.hours.tuesday}</li>
-              <li>Wednesday: {siteConfig.hours.wednesday}</li>
-              <li>Thursday: {siteConfig.hours.thursday}</li>
-              <li>Friday: {siteConfig.hours.friday}</li>
-              <li>Saturday: {siteConfig.hours.saturday}</li>
-              <li>Sunday: {siteConfig.hours.sunday}</li>
-            </ul>
+            <div className="mt-4">
+              <HoursGrid />
+            </div>
           </div>
         </div>
       </section>

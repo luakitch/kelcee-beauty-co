@@ -3,6 +3,7 @@ import { BookButton } from "@/components/BookButton";
 import { BowDivider } from "@/components/BowAccent";
 import { GalleryGrid } from "@/components/GalleryGrid";
 import { Hero } from "@/components/Hero";
+import { HoursSection } from "@/components/HoursSection";
 import { ServiceCard } from "@/components/ServiceCard";
 import { getFeaturedServices } from "@/lib/site-config";
 
@@ -41,7 +42,9 @@ export default function HomePage() {
         </div>
       </section>
 
-      <section className="bg-blush-50/50 px-4 py-16 sm:px-6 sm:py-20">
+      <HoursSection />
+
+      <section className="px-4 py-16 sm:px-6 sm:py-20">
         <div className="mx-auto max-w-6xl">
           <div className="mb-10 text-center">
             <h2 className="font-display text-3xl font-semibold text-charcoal sm:text-4xl">

@@ -22,12 +22,12 @@ export const siteConfig = {
   },
   location: "Logansport, IN",
   hours: {
-    monday: "4pm – 9pm",
-    tuesday: "4pm – 9pm",
-    wednesday: "4pm – 9pm",
-    thursday: "9am – 9pm",
-    friday: "9am – 9pm",
-    saturday: "9am – 9pm",
+    monday: "3:30pm – 9pm",
+    tuesday: "3:30pm – 9pm",
+    wednesday: "3:30pm – 9pm",
+    thursday: "9:00am – 9pm",
+    friday: "9:00am – 9pm",
+    saturday: "9:00am – 9pm",
     sunday: "Closed",
   },
   bookingPolicies: {
@@ -263,4 +263,23 @@ export function getServicesByCategory(category: ServiceCategory): Service[] {
 export function getFullAddress(): string {
   const { street, city, state, zip } = siteConfig.address;
   return `${street}, ${city}, ${state} ${zip}`;
+}
+
+/** Ordered Mon–Sun for display components */
+export const hoursSchedule = [
+  { label: "Monday", hours: siteConfig.hours.monday },
+  { label: "Tuesday", hours: siteConfig.hours.tuesday },
+  { label: "Wednesday", hours: siteConfig.hours.wednesday },
+  { label: "Thursday", hours: siteConfig.hours.thursday },
+  { label: "Friday", hours: siteConfig.hours.friday },
+  { label: "Saturday", hours: siteConfig.hours.saturday },
+  { label: "Sunday", hours: siteConfig.hours.sunday },
+] as const;
+
+export function getMapsUrl(): string {
+  return `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(getFullAddress())}`;
+}
+
+export function getPhoneHref(): string {
+  return `tel:${siteConfig.phone.replace(/\D/g, "")}`;
 }

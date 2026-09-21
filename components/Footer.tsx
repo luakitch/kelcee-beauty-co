@@ -43,6 +43,14 @@ export function Footer() {
               <li>Mon – Wed: {siteConfig.hours.monday}</li>
               <li>Thu – Sat: {siteConfig.hours.thursday}</li>
               <li>Sunday: {siteConfig.hours.sunday}</li>
+              <li>
+                <Link
+                  href="/#hours"
+                  className="font-medium text-blush-600 transition hover:text-blush-700"
+                >
+                  Full hours →
+                </Link>
+              </li>
             </ul>
             <a
               href={siteConfig.instagramUrl}

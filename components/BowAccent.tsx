@@ -1,9 +1,35 @@
+import type { CSSProperties } from "react";
+
 type BowAccentProps = {
   className?: string;
   size?: number;
+  /** Gentle fade in/out — intended for decorative hero accents */
+  animated?: boolean;
+  /** Stagger start time in seconds */
+  delay?: number;
+  /** Full cycle length in seconds */
+  duration?: number;
+  /** Peak opacity during the fade (0–1) */
+  peak?: number;
 };
 
-export function BowAccent({ className = "", size = 48 }: BowAccentProps) {
+export function BowAccent({
+  className = "",
+  size = 48,
+  animated = false,
+  delay = 0,
+  duration = 6,
+  peak = 0.5,
+}: BowAccentProps) {
+  const motionClass = animated ? "motion-reduce:animate-none motion-reduce:opacity-40" : "";
+  const animationStyle = animated
+    ? ({
+        animationDelay: `${delay}s`,
+        animationDuration: `${duration}s`,
+        "--bow-peak": peak,
+      } as CSSProperties)
+    : undefined;
+
   return (
     <svg
       width={size}
@@ -11,7 +37,8 @@ export function BowAccent({ className = "", size = 48 }: BowAccentProps) {
       viewBox="0 0 48 48"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
-      className={className}
+      className={`${className}${animated ? ` animate-bow-fade ${motionClass}` : ""}`}
+      style={animationStyle}
       aria-hidden="true"
     >
       <path
