@@ -34,7 +34,7 @@
   --color-charcoal: var(--charcoal);
   --font-sans: var(--font-nunito);
   --font-display: var(--font-cormorant);
-  --animate-bow-fade: bow-fade 6s ease-in-out infinite;
+  --animate-bow-float: bow-float 10s ease-in-out infinite;
 }
 
 body {
@@ -50,15 +50,15 @@ h4 {
   font-family: var(--font-cormorant), Georgia, serif;
 }
 
-@keyframes bow-fade {
+@keyframes bow-float {
   0%,
   100% {
-    opacity: 0;
-    transform: translateY(6px) scale(0.94);
+    transform: translateY(5px) rotate(-1.5deg);
+    opacity: 0.6;
   }
   50% {
-    opacity: var(--bow-peak, 0.5);
-    transform: translateY(0) scale(1);
+    transform: translateY(-10px) rotate(1.5deg);
+    opacity: 1;
   }
 }
 
