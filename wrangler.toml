@@ -1,9 +1,14 @@
 # Cloudflare Workers — static Next.js export (output: "export" → out/)
 #
-# Dashboard build settings (Workers & Pages → kelcee-beauty-co → Settings):
-#   Build command:     npm run build
-#   Deploy command:    npm run deploy:ci
-#   Production branch: main
+# Dashboard build settings (Workers & Pages → kelcee-beauty-co → Settings → Builds):
+#   Build command:  npm run build
+#   Deploy command: npm run deploy:ci   (both triggers — script reads WORKERS_CI_BRANCH)
+#
+# Configure TWO build triggers:
+#   Production → branch: main
+#   Preview    → branch: staging  (or * for all non-main)
+#
+# Workers Builds sets WORKERS_CI_BRANCH automatically — not CF_PAGES_BRANCH.
 #
 # URLs:
 #   Production:  https://kelceehairco.com          (main branch)
