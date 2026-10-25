@@ -4,7 +4,7 @@
  */
 
 interface Env {
-  ASSETS: Fetcher;
+  ASSETS: { fetch(request: Request): Promise<Response> };
   SUPABASE_URL?: string;
   SUPABASE_ANON_KEY?: string;
 }
@@ -44,9 +44,9 @@ export default {
   },
 
   async scheduled(
-    _controller: ScheduledController,
+    _controller: unknown,
     env: Env,
-    ctx: ExecutionContext,
+    ctx: { waitUntil(promise: Promise<unknown>): void },
   ): Promise<void> {
     ctx.waitUntil(pingSupabase(env));
   },
