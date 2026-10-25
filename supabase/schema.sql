@@ -99,3 +99,61 @@ create policy "Admin can delete gallery files"
   for delete
   to authenticated
   using (public.is_gallery_bucket(bucket_id) and public.is_gallery_admin());
+
+-- Business hours (editable in /admin/dashboard)
+create table if not exists business_hours (
+  day_key text primary key check (
+    day_key = any (
+      array[
+        'monday',
+        'tuesday',
+        'wednesday',
+        'thursday',
+        'friday',
+        'saturday',
+        'sunday'
+      ]::text[]
+    )
+  ),
+  label text not null,
+  hours_text text not null,
+  sort_order int not null,
+  updated_at timestamptz default now()
+);
+
+alter table business_hours enable row level security;
+
+insert into business_hours (day_key, label, hours_text, sort_order)
+values
+  ('monday', 'Monday', '3:30pm – 9pm', 1),
+  ('tuesday', 'Tuesday', '3:30pm – 9pm', 2),
+  ('wednesday', 'Wednesday', '3:30pm – 9pm', 3),
+  ('thursday', 'Thursday', '9:00am – 9pm', 4),
+  ('friday', 'Friday', '9:00am – 9pm', 5),
+  ('saturday', 'Saturday', '9:00am – 9pm', 6),
+  ('sunday', 'Sunday', 'Closed', 7)
+on conflict (day_key) do nothing;
+
+create policy "Public can view business hours"
+  on business_hours
+  for select
+  to anon, authenticated
+  using (true);
+
+create policy "Admin can insert business hours"
+  on business_hours
+  for insert
+  to authenticated
+  with check (public.is_gallery_admin());
+
+create policy "Admin can update business hours"
+  on business_hours
+  for update
+  to authenticated
+  using (public.is_gallery_admin());
+
+create policy "Admin can delete business hours"
+  on business_hours
+  for delete
+  to authenticated
+  using (public.is_gallery_admin());

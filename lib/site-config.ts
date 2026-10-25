@@ -265,17 +265,6 @@ export function getFullAddress(): string {
   return `${street}, ${city}, ${state} ${zip}`;
 }
 
-/** Ordered Mon–Sun for display components */
-export const hoursSchedule = [
-  { label: "Monday", hours: siteConfig.hours.monday },
-  { label: "Tuesday", hours: siteConfig.hours.tuesday },
-  { label: "Wednesday", hours: siteConfig.hours.wednesday },
-  { label: "Thursday", hours: siteConfig.hours.thursday },
-  { label: "Friday", hours: siteConfig.hours.friday },
-  { label: "Saturday", hours: siteConfig.hours.saturday },
-  { label: "Sunday", hours: siteConfig.hours.sunday },
-] as const;
-
 export function getMapsUrl(): string {
   return `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(getFullAddress())}`;
 }

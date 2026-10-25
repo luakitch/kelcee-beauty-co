@@ -11,8 +11,60 @@ export async function getSession(): Promise<Session | null> {
   const supabase = getSupabaseClient();
   if (!supabase) return null;
 
-  const { data } = await supabase.auth.getSession();
-  return data.session;
+  try {
+    const { data, error } = await supabase.auth.getSession();
+    if (error) return null;
+    return data.session;
+  } catch {
+    return null;
+  }
+}
+
+export type AdminAccess = {
+  session: Session;
+  user: User;
+};
+
+/** Validates the user with Supabase (not just local storage). */
+export async function getAdminAccess(): Promise<AdminAccess | null> {
+  const supabase = getSupabaseClient();
+  if (!supabase) return null;
+
+  try {
+    const {
+      data: { user },
+      error,
+    } = await supabase.auth.getUser();
+
+    if (error || !user || !isAdminUser(user)) {
+      if (error) {
+        await supabase.auth.signOut();
+      }
+      return null;
+    }
+
+    const { data: sessionData } = await supabase.auth.getSession();
+    if (!sessionData.session) {
+      return null;
+    }
+
+    return { session: sessionData.session, user };
+  } catch {
+    return null;
+  }
+}
+
+export function withTimeout<T>(
+  promise: Promise<T>,
+  ms: number,
+  onTimeout: () => T,
+): Promise<T> {
+  return Promise.race([
+    promise,
+    new Promise<T>((resolve) => {
+      setTimeout(() => resolve(onTimeout()), ms);
+    }),
+  ]);
 }
 
 export async function signInWithPassword(

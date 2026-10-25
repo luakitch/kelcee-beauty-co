@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { BrandLogo } from "@/components/BrandLogo";
+import { FooterHoursSummary } from "@/components/FooterHoursSummary";
 import { getFullAddress, navLinks, siteConfig } from "@/lib/site-config";
 
 export function Footer() {
@@ -14,6 +15,12 @@ export function Footer() {
             <p className="text-sm leading-relaxed text-charcoal/70">
               {siteConfig.tagline}
             </p>
+            <Link
+              href="/admin"
+              className="mt-4 inline-block text-sm font-medium text-blush-600 transition hover:text-blush-700"
+            >
+              Staff login →
+            </Link>
           </div>
 
           <div>
@@ -40,9 +47,7 @@ export function Footer() {
             </h3>
             <ul className="space-y-2 text-sm text-charcoal/70">
               <li>{getFullAddress()}</li>
-              <li>Mon – Wed: {siteConfig.hours.monday}</li>
-              <li>Thu – Sat: {siteConfig.hours.thursday}</li>
-              <li>Sunday: {siteConfig.hours.sunday}</li>
+              <FooterHoursSummary />
               <li>
                 <Link
                   href="/#hours"
