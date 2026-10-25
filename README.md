@@ -81,6 +81,19 @@ This site is a **static export** (`output: "export"` → `out/`). Use **Cloudfla
 
 That's it — **every push to `main` automatically triggers a Cloudflare build and deploy.** No GitHub Actions or extra CI setup required.
 
+### Supabase keepalive (free tier)
+
+Production Worker runs a **daily cron** (12:00 UTC) that reads one row from `business_hours` so the Supabase project stays active.
+
+After deploy, add **Worker variables** on the production worker (`kelcee-beauty-co`) → **Settings → Variables**:
+
+| Name | Value |
+|---|---|
+| `SUPABASE_URL` | Same as `NEXT_PUBLIC_SUPABASE_URL` |
+| `SUPABASE_ANON_KEY` | Same as `NEXT_PUBLIC_SUPABASE_ANON_KEY` |
+
+Optional check: open `https://kelceehairco.com/__keepalive/supabase` — expect `Supabase keepalive: HTTP 200`.
+
 ### Deploy troubleshooting
 
 If the build succeeds but deploy fails:

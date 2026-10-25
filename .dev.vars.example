@@ -1,0 +1,3 @@
+# Copy to .dev.vars for `wrangler dev` (gitignored). Same values as NEXT_PUBLIC_* in .env.local.
+SUPABASE_URL=https://your-project.supabase.co
+SUPABASE_ANON_KEY=sb_publishable_your-key-here
