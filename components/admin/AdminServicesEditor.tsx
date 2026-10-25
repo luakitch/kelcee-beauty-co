@@ -1,6 +1,7 @@
 "use client";
 
 import { FormEvent, useCallback, useEffect, useMemo, useState } from "react";
+import { AdminAddServiceModal } from "@/components/admin/AdminAddServiceModal";
 import { AdminFloatingSaveButton } from "@/components/admin/AdminFloatingSaveButton";
 import { ConfirmDialog } from "@/components/admin/ConfirmDialog";
 import { SaleToggle } from "@/components/admin/SaleToggle";
@@ -64,9 +65,14 @@ const inputClassName =
 const labelClassName =
   "mb-2 block text-xs font-medium uppercase tracking-wide text-charcoal/50";
 
+function adminServiceElementId(clientKey: string) {
+  return `admin-service-${clientKey}`;
+}
+
 type AdminServiceCardProps = {
   draft: ServiceDraft;
   validationError: string | null;
+  isLanding?: boolean;
   onUpdate: (patch: Partial<ServiceDraft>) => void;
   onDelete: () => void;
 };
@@ -74,6 +80,7 @@ type AdminServiceCardProps = {
 function AdminServiceCard({
   draft,
   validationError,
+  isLanding = false,
   onUpdate,
   onDelete,
 }: AdminServiceCardProps) {
@@ -81,7 +88,10 @@ function AdminServiceCard({
 
   return (
     <article
-      className={`flex h-full flex-col rounded-2xl border bg-white/80 p-5 shadow-sm ${
+      id={adminServiceElementId(draft.clientKey)}
+      className={`flex h-full scroll-mt-28 flex-col rounded-2xl border bg-white/80 p-5 shadow-sm ${
+        isLanding ? "admin-service-land" : ""
+      } ${
         validationError
           ? "border-rose-300 ring-1 ring-rose-200"
           : draft.isOnSale
@@ -213,6 +223,10 @@ export function AdminServicesEditor() {
   const [message, setMessage] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [draftToDelete, setDraftToDelete] = useState<ServiceDraft | null>(null);
+  const [addModalDraft, setAddModalDraft] = useState<ServiceDraft | null>(null);
+  const [landingServiceKey, setLandingServiceKey] = useState<string | null>(
+    null,
+  );
 
   const validationByKey = useMemo(() => {
     return Object.fromEntries(
@@ -253,6 +267,42 @@ export function AdminServicesEditor() {
     loadServices();
   }, [loadServices]);
 
+  useEffect(() => {
+    if (!landingServiceKey) {
+      return;
+    }
+
+    const clientKey = landingServiceKey;
+    let scrollTimer: ReturnType<typeof setTimeout> | undefined;
+    let clearTimer: ReturnType<typeof setTimeout> | undefined;
+
+    const scrollToCard = () => {
+      const element = document.getElementById(adminServiceElementId(clientKey));
+      if (!element) {
+        return;
+      }
+      element.scrollIntoView({
+        behavior: "smooth",
+        block: "center",
+      });
+    };
+
+    scrollTimer = setTimeout(() => {
+      requestAnimationFrame(scrollToCard);
+    }, 50);
+
+    clearTimer = setTimeout(() => {
+      setLandingServiceKey((current) =>
+        current === clientKey ? null : current,
+      );
+    }, 650);
+
+    return () => {
+      clearTimeout(scrollTimer);
+      clearTimeout(clearTimer);
+    };
+  }, [landingServiceKey]);
+
   function updateDraft(clientKey: string, patch: Partial<ServiceDraft>) {
     setDrafts((prev) =>
       prev.map((draft) =>
@@ -261,12 +311,18 @@ export function AdminServicesEditor() {
     );
   }
 
-  function addService(category: ServiceCategory) {
+  function openAddServiceModal(category: ServiceCategory) {
     const maxSort = drafts.reduce(
       (max, draft) => Math.max(max, draft.sortOrder),
       0,
     );
-    setDrafts((prev) => [...prev, createEmptyDraft(category, maxSort + 1)]);
+    setAddModalDraft(createEmptyDraft(category, maxSort + 1));
+  }
+
+  function confirmAddService(draft: ServiceDraft) {
+    setDrafts((prev) => [...prev, draft]);
+    setAddModalDraft(null);
+    setLandingServiceKey(draft.clientKey);
   }
 
   function removeDraft(clientKey: string) {
@@ -355,8 +411,10 @@ export function AdminServicesEditor() {
                   </h3>
                   <button
                     type="button"
-                    onClick={() => addService(category as ServiceCategory)}
-                    className="rounded-full border border-blush-300 bg-white px-4 py-2 text-xs font-semibold text-blush-600 transition hover:border-blush-400 hover:bg-blush-50"
+                    onClick={() =>
+                      openAddServiceModal(category as ServiceCategory)
+                    }
+                    className="cursor-pointer rounded-full border border-blush-300 bg-white px-4 py-2 text-xs font-semibold text-blush-600 transition-all duration-200 hover:scale-[1.04] hover:border-blush-400 hover:bg-blush-50 hover:text-blush-700 hover:shadow-md active:scale-[0.97] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blush-300 focus-visible:ring-offset-2"
                   >
                     + Add service
                   </button>
@@ -373,6 +431,7 @@ export function AdminServicesEditor() {
                         key={draft.clientKey}
                         draft={draft}
                         validationError={validationByKey[draft.clientKey]}
+                        isLanding={landingServiceKey === draft.clientKey}
                         onUpdate={(patch) =>
                           updateDraft(draft.clientKey, patch)
                         }
@@ -399,6 +458,16 @@ export function AdminServicesEditor() {
         disabled={hasValidationErrors}
         label="Save services"
       />
+
+      {addModalDraft && (
+        <AdminAddServiceModal
+          open
+          initialDraft={addModalDraft}
+          existingDrafts={drafts}
+          onConfirm={confirmAddService}
+          onCancel={() => setAddModalDraft(null)}
+        />
+      )}
 
       <ConfirmDialog
         open={draftToDelete !== null}

@@ -111,3 +111,35 @@ h4 {
   }
 }
 
+@keyframes admin-service-land {
+  0% {
+    opacity: 0;
+    transform: translateY(-32px) scale(0.92);
+  }
+  50% {
+    opacity: 1;
+    transform: translateY(8px) scale(1.03);
+  }
+  72% {
+    transform: translateY(-4px) scale(0.98);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.admin-service-land {
+  animation: admin-service-land 0.6s cubic-bezier(0.34, 1.35, 0.64, 1) forwards;
+  box-shadow:
+    0 12px 28px rgba(236, 72, 153, 0.12),
+    0 0 0 2px rgba(251, 207, 232, 0.9);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .admin-service-land {
+    animation: none;
+    box-shadow: 0 0 0 2px rgba(251, 207, 232, 0.9);
+  }
+}
+
