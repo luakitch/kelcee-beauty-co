@@ -8,9 +8,10 @@
 # staging / preview     → wrangler deploy --env preview → preview.kelceehairco.com
 #
 # Recommended Cloudflare setup (Settings → Builds):
-#   Production trigger → main branch  → Deploy command: npm run deploy:ci
-#   Preview trigger    → staging branch → Deploy command: npm run deploy:ci
-#   (Or set preview trigger deploy to: npm run deploy:preview)
+#   Production trigger → main branch  → Deploy command: npm run deploy
+#   Preview trigger    → staging branch → Deploy command: npm run deploy
+#
+# Do NOT use bare `npx wrangler deploy` — production needs --var for Supabase keepalive.
 
 set -euo pipefail
 
@@ -33,11 +34,20 @@ echo "  CF_PAGES_BRANCH=${CF_PAGES_BRANCH:-<unset>}"
 echo "  Resolved branch: $BRANCH"
 
 if [[ "$BRANCH" == "main" || "$BRANCH" == "master" ]]; then
-  echo "==> Production deploy"
-  npx wrangler deploy
-  bash scripts/deploy-keepalive.sh
+  echo "==> Production deploy (static assets + Supabase keepalive cron)"
+  url="${NEXT_PUBLIC_SUPABASE_URL:-${SUPABASE_URL:-}}"
+  key="${NEXT_PUBLIC_SUPABASE_ANON_KEY:-${SUPABASE_ANON_KEY:-}}"
+  if [[ -n "$url" && -n "$key" ]]; then
+    npx wrangler deploy --env="" \
+      --var "SUPABASE_URL:${url}" \
+      --var "SUPABASE_ANON_KEY:${key}"
+  else
+    echo "WARNING: NEXT_PUBLIC_SUPABASE_* unset — keepalive cron will 503 until vars are set on deploy"
+    npx wrangler deploy --env=""
+  fi
   echo ""
   echo "Production: https://kelceehairco.com"
+  echo "Keepalive check: https://kelceehairco.com/__keepalive/supabase"
 elif [[ "$BRANCH" == "staging" || "$BRANCH" == "preview" ]]; then
   echo "==> Preview deploy"
   npx wrangler deploy --env preview

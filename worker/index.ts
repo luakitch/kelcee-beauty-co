@@ -1,9 +1,10 @@
 /**
- * Standalone cron Worker (not the static site). Pings Supabase daily on the free tier.
- * Manual check: GET https://kelcee-beauty-co-supabase-keepalive.<subdomain>.workers.dev/
+ * Serves static export + nightly Supabase keepalive on production (vars via wrangler --var on deploy).
+ * Manual check: GET /__keepalive/supabase
  */
 
 interface Env {
+  ASSETS: { fetch(request: Request): Promise<Response> };
   SUPABASE_URL?: string;
   SUPABASE_ANON_KEY?: string;
 }
@@ -28,14 +29,17 @@ async function pingSupabase(env: Env): Promise<Response> {
   });
 
   const ok = res.ok || res.status === 206;
-  const body = `Supabase keepalive: HTTP ${res.status}`;
-
-  return new Response(body, { status: ok ? 200 : 502 });
+  return new Response(`Supabase keepalive: HTTP ${res.status}`, {
+    status: ok ? 200 : 502,
+  });
 }
 
 export default {
-  async fetch(_request: Request, env: Env): Promise<Response> {
-    return pingSupabase(env);
+  async fetch(request: Request, env: Env): Promise<Response> {
+    if (new URL(request.url).pathname === "/__keepalive/supabase") {
+      return pingSupabase(env);
+    }
+    return env.ASSETS.fetch(request);
   },
 
   async scheduled(

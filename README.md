@@ -63,7 +63,7 @@ This site is a **static export** (`output: "export"` → `out/`). Use **Cloudfla
 | Framework preset | None (or Next.js Static HTML Export) |
 | Build command | `npm run build` |
 | Build output directory | `out` |
-| **Deploy command** | `npm run deploy` (or leave empty) — **not** `npx wrangler deploy` |
+| **Deploy command** | **`npm run deploy`** — **not** `npx wrangler deploy` (deploy script passes Supabase keepalive vars) |
 | Node version | `22` (matches `.node-version`; or set env var `NODE_VERSION=22`) |
 
 4. Add environment variables in **Settings → Environment variables** (Production):
@@ -83,15 +83,11 @@ That's it — **every push to `main` automatically triggers a Cloudflare build a
 
 ### Supabase keepalive (free tier)
 
-The marketing Worker (`kelcee-beauty-co`) is **static assets only**, so Cloudflare does not allow runtime variables on it. A separate Worker, **`kelcee-beauty-co-supabase-keepalive`**, runs a **daily cron** (12:00 UTC) and pings `business_hours`.
+Production **`kelcee-beauty-co`** includes a small Worker script (`worker/index.ts`) plus your static `out/` assets. A **daily cron** (12:00 UTC) pings `business_hours`. Supabase URL/key are injected at deploy time from **`NEXT_PUBLIC_SUPABASE_URL`** and **`NEXT_PUBLIC_SUPABASE_ANON_KEY`** (via `npm run deploy` — do not use bare `npx wrangler deploy` in Cloudflare Builds).
 
-On **main** production builds, the keepalive Worker is deployed automatically (after `next build` and again on `npm run deploy` / `deploy:ci`) using **`NEXT_PUBLIC_SUPABASE_URL`** and **`NEXT_PUBLIC_SUPABASE_ANON_KEY`**. It appears as a **third** entry in Workers & Pages: **`kelcee-beauty-co-supabase-keepalive`** (no Git icon — deployed by Wrangler, not the site repo connection).
+Check: **`https://kelceehairco.com/__keepalive/supabase`** → `Supabase keepalive: HTTP 200`.
 
-In the build log, look for `==> Deploy Supabase keepalive Worker`. If you see `Skipping Supabase keepalive`, those env vars are missing from the Cloudflare build settings.
-
-Optional check: open `https://kelcee-beauty-co-supabase-keepalive.kitchel301.workers.dev/` (your account subdomain may differ) — expect `Supabase keepalive: HTTP 200`.
-
-One-off from your machine (Wrangler logged in): `npm run deploy:keepalive` with the same env vars exported, or set in the dashboard on that Worker.
+Cloudflare **Workers Builds** cannot deploy a second Worker name from the same Git connection; a separate keepalive Worker would overwrite this project.
 
 ### Deploy troubleshooting
 
