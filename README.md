@@ -85,9 +85,13 @@ That's it — **every push to `main` automatically triggers a Cloudflare build a
 
 The marketing Worker (`kelcee-beauty-co`) is **static assets only**, so Cloudflare does not allow runtime variables on it. A separate Worker, **`kelcee-beauty-co-supabase-keepalive`**, runs a **daily cron** (12:00 UTC) and pings `business_hours`.
 
-On production deploy, `npm run deploy:ci` deploys that Worker and passes **`NEXT_PUBLIC_SUPABASE_URL`** and **`NEXT_PUBLIC_SUPABASE_ANON_KEY`** from your existing build environment variables (no extra dashboard setup).
+On **main** production builds, the keepalive Worker is deployed automatically (after `next build` and again on `npm run deploy` / `deploy:ci`) using **`NEXT_PUBLIC_SUPABASE_URL`** and **`NEXT_PUBLIC_SUPABASE_ANON_KEY`**. It appears as a **third** entry in Workers & Pages: **`kelcee-beauty-co-supabase-keepalive`** (no Git icon — deployed by Wrangler, not the site repo connection).
 
-Optional check: open the keepalive Worker’s `*.workers.dev` URL — expect `Supabase keepalive: HTTP 200`. You can also add or edit variables under **Workers & Pages → kelcee-beauty-co-supabase-keepalive → Settings → Variables**.
+In the build log, look for `==> Deploy Supabase keepalive Worker`. If you see `Skipping Supabase keepalive`, those env vars are missing from the Cloudflare build settings.
+
+Optional check: open `https://kelcee-beauty-co-supabase-keepalive.kitchel301.workers.dev/` (your account subdomain may differ) — expect `Supabase keepalive: HTTP 200`.
+
+One-off from your machine (Wrangler logged in): `npm run deploy:keepalive` with the same env vars exported, or set in the dashboard on that Worker.
 
 ### Deploy troubleshooting
 

@@ -14,23 +14,6 @@
 
 set -euo pipefail
 
-KEEPALIVE_CONFIG="workers/supabase-keepalive/wrangler.toml"
-
-deploy_supabase_keepalive() {
-  local url="${NEXT_PUBLIC_SUPABASE_URL:-}"
-  local key="${NEXT_PUBLIC_SUPABASE_ANON_KEY:-}"
-
-  if [[ -z "$url" || -z "$key" ]]; then
-    echo "==> Skipping Supabase keepalive (set NEXT_PUBLIC_SUPABASE_URL and NEXT_PUBLIC_SUPABASE_ANON_KEY on the build)"
-    return 0
-  fi
-
-  echo "==> Deploy Supabase keepalive Worker"
-  npx wrangler deploy -c "$KEEPALIVE_CONFIG" \
-    --var "SUPABASE_URL:${url}" \
-    --var "SUPABASE_ANON_KEY:${key}"
-}
-
 normalize_branch() {
   local raw="${1:-}"
   raw="${raw#refs/heads/}"
@@ -52,7 +35,7 @@ echo "  Resolved branch: $BRANCH"
 if [[ "$BRANCH" == "main" || "$BRANCH" == "master" ]]; then
   echo "==> Production deploy"
   npx wrangler deploy
-  deploy_supabase_keepalive
+  bash scripts/deploy-keepalive.sh
   echo ""
   echo "Production: https://kelceehairco.com"
 elif [[ "$BRANCH" == "staging" || "$BRANCH" == "preview" ]]; then

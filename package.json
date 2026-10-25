@@ -4,13 +4,13 @@
   "private": true,
   "scripts": {
     "dev": "next dev --turbopack",
-    "build": "next build --turbopack",
+    "build": "next build --turbopack && bash scripts/deploy-keepalive-if-ci-main.sh",
     "start": "next start",
     "lint": "eslint",
-    "deploy": "wrangler deploy",
-    "deploy:preview": "wrangler deploy --env preview",
+    "deploy": "bash scripts/deploy.sh",
+    "deploy:preview": "WORKERS_CI_BRANCH=staging bash scripts/deploy.sh",
     "deploy:ci": "bash scripts/deploy.sh",
-    "deploy:keepalive": "wrangler deploy -c workers/supabase-keepalive/wrangler.toml",
+    "deploy:keepalive": "bash scripts/deploy-keepalive.sh",
     "pages:deploy": "wrangler pages deploy out --project-name=kelcee-beauty-co"
   },
   "engines": {
