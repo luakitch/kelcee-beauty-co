@@ -1,33 +1,17 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect, useState } from "react";
-import {
-  getDefaultHoursSchedule,
-  getHoursForDay,
-  type HoursScheduleEntry,
-} from "@/lib/hours";
-import { fetchBusinessHours } from "@/lib/supabase/hours";
+import { useMemo } from "react";
+import { useBusinessHoursContext } from "@/components/BusinessHoursProvider";
+import { getFooterHoursSummaryLines } from "@/lib/hours";
 import { getFullAddress, siteConfig } from "@/lib/site-config";
 
 export function FooterVisitSection() {
-  const [schedule, setSchedule] = useState<HoursScheduleEntry[]>(
-    getDefaultHoursSchedule(),
+  const { schedule } = useBusinessHoursContext();
+  const summaryLines = useMemo(
+    () => getFooterHoursSummaryLines(schedule),
+    [schedule],
   );
-
-  useEffect(() => {
-    let cancelled = false;
-
-    fetchBusinessHours().then((data) => {
-      if (!cancelled) {
-        setSchedule(data);
-      }
-    });
-
-    return () => {
-      cancelled = true;
-    };
-  }, []);
 
   return (
     <div>
@@ -36,9 +20,11 @@ export function FooterVisitSection() {
       </h3>
       <ul className="space-y-2 text-sm text-charcoal/70">
         <li>{getFullAddress()}</li>
-        <li>Mon – Wed: {getHoursForDay(schedule, "monday")}</li>
-        <li>Thu – Sat: {getHoursForDay(schedule, "thursday")}</li>
-        <li>Sunday: {getHoursForDay(schedule, "sunday")}</li>
+        {summaryLines.map((line) => (
+          <li key={line.label}>
+            {line.label}: {line.hours}
+          </li>
+        ))}
         <li>
           <Link
             href="/#hours"

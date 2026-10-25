@@ -1,11 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import {
-  getDefaultHoursSchedule,
-  type HoursScheduleEntry,
-} from "@/lib/hours";
-import { fetchBusinessHours } from "@/lib/supabase/hours";
+import { useBusinessHoursContext } from "@/components/BusinessHoursProvider";
 
 /** Monday = 0 … Sunday = 6 (matches schedule order) */
 function getTodayIndex(): number {
@@ -14,26 +9,7 @@ function getTodayIndex(): number {
 }
 
 export function HoursGrid() {
-  const [schedule, setSchedule] = useState<HoursScheduleEntry[]>(
-    getDefaultHoursSchedule(),
-  );
-  const [loaded, setLoaded] = useState(false);
-
-  useEffect(() => {
-    let cancelled = false;
-
-    fetchBusinessHours().then((data) => {
-      if (!cancelled) {
-        setSchedule(data);
-        setLoaded(true);
-      }
-    });
-
-    return () => {
-      cancelled = true;
-    };
-  }, []);
-
+  const { schedule, loaded } = useBusinessHoursContext();
   const todayIndex = getTodayIndex();
 
   return (
