@@ -6,10 +6,10 @@ import { ServiceCard } from "@/components/ServiceCard";
 import {
   catalogServiceToCardProps,
   getDefaultCatalogServices,
+  getOrderedCategoriesFromServices,
   getServicesByCategoryFromCatalog,
   type CatalogService,
 } from "@/lib/catalog-service";
-import { serviceCategories } from "@/lib/site-config";
 import { fetchCatalogServices } from "@/lib/supabase/catalog-services";
 
 export function ServicesCatalog() {
@@ -33,7 +33,7 @@ export function ServicesCatalog() {
 
   return (
     <div className="space-y-16">
-        {serviceCategories.map((category) => {
+        {getOrderedCategoriesFromServices(services).map((category) => {
           const categoryServices = getServicesByCategoryFromCatalog(
             services,
             category,

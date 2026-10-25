@@ -3,16 +3,16 @@ import { BookButton } from "@/components/BookButton";
 import { BowDivider } from "@/components/BowAccent";
 import { GalleryGrid } from "@/components/GalleryGrid";
 import { Hero } from "@/components/Hero";
+import { HomeSalesSection } from "@/components/HomeSalesSection";
 import { HoursSection } from "@/components/HoursSection";
 import { FeaturedServicesSection } from "@/components/FeaturedServicesSection";
-import { SalesSection } from "@/components/SalesSection";
 
 export default function HomePage() {
   return (
     <>
       <Hero />
 
-      <SalesSection />
+      <HomeSalesSection />
 
       <FeaturedServicesSection />
 

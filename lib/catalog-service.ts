@@ -79,19 +79,29 @@ export function getDefaultCatalogServices(): CatalogService[] {
 export function mergeCatalogWithDefaults(
   rows: CatalogServiceRow[],
 ): CatalogService[] {
-  const defaults = getDefaultCatalogServices();
   if (rows.length === 0) {
-    return defaults;
+    return getDefaultCatalogServices();
   }
 
-  const byName = new Map(rows.map((row) => [row.name, rowToCatalogService(row)]));
+  return rows
+    .map(rowToCatalogService)
+    .sort((a, b) => a.sortOrder - b.sortOrder);
+}
 
-  return defaults.map((fallback) => byName.get(fallback.name) ?? fallback);
+export function getOrderedCategoriesFromServices(
+  services: Pick<CatalogService, "category">[],
+): string[] {
+  const present = new Set(services.map((service) => service.category));
+  const ordered = serviceCategories.filter((category) => present.has(category));
+  const extras = [...present].filter(
+    (category) => !serviceCategories.includes(category as ServiceCategory),
+  );
+  return [...ordered, ...extras];
 }
 
 export function getServicesByCategoryFromCatalog(
   list: CatalogService[],
-  category: ServiceCategory,
+  category: string,
 ): CatalogService[] {
   return list.filter((service) => service.category === category);
 }

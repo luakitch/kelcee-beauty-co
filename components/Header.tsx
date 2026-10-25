@@ -6,12 +6,20 @@ import { useState } from "react";
 import { BrandLogo } from "@/components/BrandLogo";
 import { navLinks } from "@/lib/site-config";
 
-export function Header() {
+type HeaderProps = {
+  stickyClassName?: string;
+};
+
+export function Header({
+  stickyClassName = "sticky top-0 z-50",
+}: HeaderProps) {
   const pathname = usePathname();
   const [menuOpen, setMenuOpen] = useState(false);
 
   return (
-    <header className="sticky top-0 z-50 border-b border-blush-200/60 bg-cream/90 backdrop-blur-md">
+    <header
+      className={`${stickyClassName} border-b border-blush-200/60 bg-cream/90 backdrop-blur-md`}
+    >
       <div className="mx-auto flex max-w-6xl items-center justify-between px-4 py-4 sm:px-6">
         <Link href="/" className="group transition hover:opacity-90">
           <BrandLogo size="md" showName={false} />

@@ -1,6 +1,7 @@
 "use client";
 
 import { FormEvent, useCallback, useEffect, useMemo, useState } from "react";
+import { AdminFloatingSaveButton } from "@/components/admin/AdminFloatingSaveButton";
 import { DayHoursEditorRow } from "@/components/admin/DayHoursEditorRow";
 import { HOURS_EDITOR_ROW_GRID } from "@/components/admin/hours-editor-layout";
 import {
@@ -16,9 +17,15 @@ import {
   type DayHoursValue,
 } from "@/lib/hours-format";
 import {
+  cloneHoursDays,
+  countHoursDayChanges,
+} from "@/lib/admin-change-count";
+import {
   loadBusinessHoursForAdmin,
   saveBusinessHours,
 } from "@/lib/supabase/hours-admin";
+
+const HOURS_FORM_ID = "admin-hours-form";
 
 function scheduleToDayValues(
   schedule: { dayKey: DayKey; hours: string }[],
@@ -41,6 +48,7 @@ export function AdminHoursEditor() {
   const [saving, setSaving] = useState(false);
   const [message, setMessage] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const [baselineDays, setBaselineDays] = useState<DayHoursValue[]>([]);
 
   const validationByDay = useMemo(() => {
     return Object.fromEntries(
@@ -52,11 +60,18 @@ export function AdminHoursEditor() {
     (key) => validationByDay[key] !== null,
   );
 
+  const changeCount = useMemo(
+    () => countHoursDayChanges(days, baselineDays),
+    [days, baselineDays],
+  );
+
   const loadHours = useCallback(async () => {
     setLoading(true);
     try {
       const schedule = await loadBusinessHoursForAdmin();
-      setDays(scheduleToDayValues(schedule));
+      const nextDays = scheduleToDayValues(schedule);
+      setDays(nextDays);
+      setBaselineDays(cloneHoursDays(nextDays));
     } catch (err) {
       setError(
         err instanceof Error ? err.message : "Could not load business hours.",
@@ -126,7 +141,11 @@ export function AdminHoursEditor() {
       {loading ? (
         <p className="text-sm text-charcoal/60">Loading hours…</p>
       ) : (
-        <form onSubmit={handleSubmit} className="space-y-4">
+        <form
+          id={HOURS_FORM_ID}
+          onSubmit={handleSubmit}
+          className={`space-y-4 ${changeCount > 0 ? "pb-24" : ""}`}
+        >
           <ul className="overflow-x-auto rounded-lg border border-blush-100 bg-blush-50/20 px-3 pb-1 pt-2">
             <li
               className={`${HOURS_EDITOR_ROW_GRID} border-b border-blush-100 pb-2 text-[10px] font-medium uppercase tracking-wide text-charcoal/45`}
@@ -161,23 +180,24 @@ export function AdminHoursEditor() {
 
           <div className="flex flex-wrap gap-2">
             <button
-              type="submit"
-              disabled={saving || hasValidationErrors}
-              className="rounded-full bg-blush-500 px-5 py-2 text-xs font-semibold text-white transition hover:bg-blush-600 disabled:opacity-60"
-            >
-              {saving ? "Saving…" : "Save hours"}
-            </button>
-            <button
               type="button"
               onClick={handleReset}
               disabled={saving}
-              className="rounded-full border border-blush-300 px-5 py-2 text-xs font-medium text-charcoal transition hover:bg-blush-50 disabled:opacity-60"
+              className="cursor-pointer rounded-full border border-blush-300 px-5 py-2 text-xs font-medium text-charcoal transition hover:bg-blush-50 disabled:opacity-60"
             >
               Reset
             </button>
           </div>
         </form>
       )}
+
+      <AdminFloatingSaveButton
+        formId={HOURS_FORM_ID}
+        changeCount={changeCount}
+        saving={saving}
+        disabled={hasValidationErrors}
+        label="Save hours"
+      />
     </section>
   );
 }

@@ -1,9 +1,11 @@
+import { GlimmerOverlay } from "@/components/GlimmerOverlay";
 import { getServicePriceDisplay } from "@/lib/service-pricing";
 
 type ServicePriceBadgeProps = {
   price: string;
   isOnSale?: boolean;
   salePrice?: string | null;
+  glimmerSalePrice?: boolean;
   className?: string;
 };
 
@@ -11,6 +13,7 @@ export function ServicePriceBadge({
   price,
   isOnSale = false,
   salePrice = null,
+  glimmerSalePrice = false,
   className = "",
 }: ServicePriceBadgeProps) {
   const { displayPrice, compareAtPrice, onSale } = getServicePriceDisplay({
@@ -18,6 +21,8 @@ export function ServicePriceBadge({
     isOnSale,
     salePriceText: salePrice,
   });
+
+  const showGlimmer = onSale && glimmerSalePrice;
 
   return (
     <span
@@ -29,13 +34,14 @@ export function ServicePriceBadge({
         </span>
       )}
       <span
-        className={`rounded-full px-3 py-1 text-sm font-medium ${
+        className={`relative overflow-hidden rounded-full px-3 py-1 text-sm font-semibold ${
           onSale
-            ? "bg-rose-100 text-rose-800"
+            ? "bg-gradient-to-r from-rose-100 to-blush-100 text-rose-900 ring-1 ring-rose-200/80"
             : "bg-blush-100 text-blush-700"
         }`}
       >
-        {onSale ? `Sale ${displayPrice}` : displayPrice}
+        {showGlimmer && <GlimmerOverlay />}
+        <span className="relative">{displayPrice}</span>
       </span>
     </span>
   );
