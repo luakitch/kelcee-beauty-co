@@ -20,6 +20,7 @@ import {
   cloneServiceDrafts,
   countServiceDraftChanges,
 } from "@/lib/admin-change-count";
+import { useAdminCatalogServices } from "@/components/admin/AdminCatalogServicesContext";
 import {
   loadCatalogServicesForAdmin,
   saveCatalogServices,
@@ -213,6 +214,7 @@ function AdminServiceCard({
 }
 
 export function AdminServicesEditor() {
+  const { setServiceDrafts, refreshSavedServices } = useAdminCatalogServices();
   const [drafts, setDrafts] = useState<ServiceDraft[]>(() =>
     getDefaultCatalogServices().map(toDraft),
   );
@@ -266,6 +268,16 @@ export function AdminServicesEditor() {
   useEffect(() => {
     loadServices();
   }, [loadServices]);
+
+  useEffect(() => {
+    if (!loading) {
+      setServiceDrafts(drafts);
+    }
+  }, [drafts, loading, setServiceDrafts]);
+
+  useEffect(() => {
+    return () => setServiceDrafts(null);
+  }, [setServiceDrafts]);
 
   useEffect(() => {
     if (!landingServiceKey) {
@@ -351,6 +363,7 @@ export function AdminServicesEditor() {
 
     setMessage("Services saved.");
     await loadServices();
+    await refreshSavedServices();
   }
 
   return (
