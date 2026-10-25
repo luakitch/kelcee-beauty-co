@@ -1,0 +1,7 @@
+name = "kelcee-beauty-co-supabase-keepalive"
+main = "index.ts"
+compatibility_date = "2024-09-23"
+
+# Daily ping so the Supabase free tier does not pause (~7 days inactivity).
+[triggers]
+crons = ["0 12 * * *"]

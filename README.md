@@ -83,16 +83,11 @@ That's it — **every push to `main` automatically triggers a Cloudflare build a
 
 ### Supabase keepalive (free tier)
 
-Production Worker runs a **daily cron** (12:00 UTC) that reads one row from `business_hours` so the Supabase project stays active.
+The marketing Worker (`kelcee-beauty-co`) is **static assets only**, so Cloudflare does not allow runtime variables on it. A separate Worker, **`kelcee-beauty-co-supabase-keepalive`**, runs a **daily cron** (12:00 UTC) and pings `business_hours`.
 
-After deploy, add **Worker variables** on the production worker (`kelcee-beauty-co`) → **Settings → Variables**:
+On production deploy, `npm run deploy:ci` deploys that Worker and passes **`NEXT_PUBLIC_SUPABASE_URL`** and **`NEXT_PUBLIC_SUPABASE_ANON_KEY`** from your existing build environment variables (no extra dashboard setup).
 
-| Name | Value |
-|---|---|
-| `SUPABASE_URL` | Same as `NEXT_PUBLIC_SUPABASE_URL` |
-| `SUPABASE_ANON_KEY` | Same as `NEXT_PUBLIC_SUPABASE_ANON_KEY` |
-
-Optional check: open `https://kelceehairco.com/__keepalive/supabase` — expect `Supabase keepalive: HTTP 200`.
+Optional check: open the keepalive Worker’s `*.workers.dev` URL — expect `Supabase keepalive: HTTP 200`. You can also add or edit variables under **Workers & Pages → kelcee-beauty-co-supabase-keepalive → Settings → Variables**.
 
 ### Deploy troubleshooting
 

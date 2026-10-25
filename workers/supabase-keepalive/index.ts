@@ -1,10 +1,9 @@
 /**
- * Serves static assets and runs a nightly Supabase keepalive (free-tier inactivity).
- * Manual check: GET https://kelceehairco.com/__keepalive/supabase
+ * Standalone cron Worker (not the static site). Pings Supabase daily on the free tier.
+ * Manual check: GET https://kelcee-beauty-co-supabase-keepalive.<subdomain>.workers.dev/
  */
 
 interface Env {
-  ASSETS: { fetch(request: Request): Promise<Response> };
   SUPABASE_URL?: string;
   SUPABASE_ANON_KEY?: string;
 }
@@ -35,12 +34,8 @@ async function pingSupabase(env: Env): Promise<Response> {
 }
 
 export default {
-  async fetch(request: Request, env: Env): Promise<Response> {
-    const { pathname } = new URL(request.url);
-    if (pathname === "/__keepalive/supabase") {
-      return pingSupabase(env);
-    }
-    return env.ASSETS.fetch(request);
+  async fetch(_request: Request, env: Env): Promise<Response> {
+    return pingSupabase(env);
   },
 
   async scheduled(

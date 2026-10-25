@@ -10,6 +10,7 @@
     "deploy": "wrangler deploy",
     "deploy:preview": "wrangler deploy --env preview",
     "deploy:ci": "bash scripts/deploy.sh",
+    "deploy:keepalive": "wrangler deploy -c workers/supabase-keepalive/wrangler.toml",
     "pages:deploy": "wrangler pages deploy out --project-name=kelcee-beauty-co"
   },
   "engines": {
