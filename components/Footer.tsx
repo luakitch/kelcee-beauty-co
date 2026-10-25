@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { BrandLogo } from "@/components/BrandLogo";
-import { FooterHoursSummary } from "@/components/FooterHoursSummary";
-import { getFullAddress, navLinks, siteConfig } from "@/lib/site-config";
+import { FooterVisitSection } from "@/components/FooterVisitSection";
+import { navLinks, siteConfig } from "@/lib/site-config";
 
 export function Footer() {
   return (
@@ -15,12 +15,12 @@ export function Footer() {
             <p className="text-sm leading-relaxed text-charcoal/70">
               {siteConfig.tagline}
             </p>
-            <Link
+            <a
               href="/admin"
               className="mt-4 inline-block text-sm font-medium text-blush-600 transition hover:text-blush-700"
             >
               Staff login →
-            </Link>
+            </a>
           </div>
 
           <div>
@@ -41,35 +41,13 @@ export function Footer() {
             </ul>
           </div>
 
-          <div>
-            <h3 className="mb-3 font-display text-base font-semibold text-charcoal">
-              Visit Us
-            </h3>
-            <ul className="space-y-2 text-sm text-charcoal/70">
-              <li>{getFullAddress()}</li>
-              <FooterHoursSummary />
-              <li>
-                <Link
-                  href="/#hours"
-                  className="font-medium text-blush-600 transition hover:text-blush-700"
-                >
-                  Full hours →
-                </Link>
-              </li>
-            </ul>
-            <a
-              href={siteConfig.instagramUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="mt-4 inline-block text-sm font-medium text-blush-600 transition hover:text-blush-700"
-            >
-              Follow on Instagram →
-            </a>
-          </div>
+          <FooterVisitSection />
         </div>
 
         <div className="mt-10 border-t border-blush-200/60 pt-6 text-center text-xs text-charcoal/50">
-          <p>© {new Date().getFullYear()} {siteConfig.name}. All rights reserved.</p>
+          <p>
+            © {new Date().getFullYear()} {siteConfig.name}. All rights reserved.
+          </p>
           <p className="mt-2">
             Site by{" "}
             <a

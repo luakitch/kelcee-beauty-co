@@ -36,10 +36,12 @@ export async function getAdminAccess(): Promise<AdminAccess | null> {
       error,
     } = await supabase.auth.getUser();
 
-    if (error || !user || !isAdminUser(user)) {
-      if (error) {
-        await supabase.auth.signOut();
-      }
+    if (error || !user) {
+      return null;
+    }
+
+    if (!isAdminUser(user)) {
+      await supabase.auth.signOut();
       return null;
     }
 

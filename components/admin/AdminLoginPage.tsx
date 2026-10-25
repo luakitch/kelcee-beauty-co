@@ -1,10 +1,11 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import { AdminLoginForm } from "@/components/admin/AdminLoginForm";
 import {
   getAdminAccess,
+  isAdminUser,
   onAuthStateChange,
   withTimeout,
 } from "@/lib/supabase/auth";
@@ -13,11 +14,18 @@ const SESSION_CHECK_MS = 8000;
 
 export function AdminLoginPage() {
   const router = useRouter();
+  const redirectingRef = useRef(false);
   const [checkingSession, setCheckingSession] = useState(true);
   const [checkNote, setCheckNote] = useState<string | null>(null);
 
   useEffect(() => {
     let cancelled = false;
+
+    function goToDashboard() {
+      if (redirectingRef.current) return;
+      redirectingRef.current = true;
+      router.replace("/admin/dashboard");
+    }
 
     async function finishCheck() {
       const access = await withTimeout(
@@ -29,21 +37,27 @@ export function AdminLoginPage() {
       if (cancelled) return;
 
       if (access) {
-        router.replace("/admin/dashboard");
+        goToDashboard();
         return;
       }
 
       setCheckNote(null);
       setCheckingSession(false);
+      redirectingRef.current = false;
     }
 
     finishCheck();
 
-    const unsubscribe = onAuthStateChange(() => {
-      getAdminAccess().then((access) => {
-        if (cancelled || !access) return;
-        router.replace("/admin/dashboard");
-      });
+    const unsubscribe = onAuthStateChange((session) => {
+      if (cancelled) return;
+
+      if (session && isAdminUser(session.user)) {
+        goToDashboard();
+        return;
+      }
+
+      setCheckingSession(false);
+      redirectingRef.current = false;
     });
 
     const slowTimer = window.setTimeout(() => {

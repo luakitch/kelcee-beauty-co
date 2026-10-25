@@ -2,7 +2,6 @@
 
 import Link from "next/link";
 import { useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
 import { BrandLogo } from "@/components/BrandLogo";
 import { getSession, signOut } from "@/lib/supabase/auth";
 
@@ -12,7 +11,6 @@ type AdminShellProps = {
 };
 
 export function AdminShell({ title, children }: AdminShellProps) {
-  const router = useRouter();
   const [signedInEmail, setSignedInEmail] = useState<string | null>(null);
 
   useEffect(() => {
@@ -23,7 +21,7 @@ export function AdminShell({ title, children }: AdminShellProps) {
 
   async function handleSignOut() {
     await signOut();
-    router.replace("/admin");
+    window.location.assign("/admin");
   }
 
   return (

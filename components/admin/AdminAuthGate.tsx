@@ -1,11 +1,12 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import type { Session } from "@supabase/supabase-js";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import {
   getAdminAccess,
+  isAdminUser,
   onAuthStateChange,
   withTimeout,
 } from "@/lib/supabase/auth";
@@ -16,14 +17,35 @@ type AdminAuthGateProps = {
 
 const SESSION_CHECK_MS = 8000;
 
+function sessionHasAdminAccess(session: Session | null): session is Session {
+  return Boolean(session && isAdminUser(session.user));
+}
+
 export function AdminAuthGate({ children }: AdminAuthGateProps) {
   const router = useRouter();
+  const pathname = usePathname();
+  const redirectingRef = useRef(false);
   const [session, setSession] = useState<Session | null>(null);
   const [loading, setLoading] = useState(true);
   const [denied, setDenied] = useState(false);
 
   useEffect(() => {
     let cancelled = false;
+
+    function redirectToLogin() {
+      if (redirectingRef.current || pathname === "/admin") {
+        return;
+      }
+      redirectingRef.current = true;
+      router.replace("/admin");
+    }
+
+    function handleNoAccess() {
+      setSession(null);
+      setLoading(false);
+      setDenied(true);
+      redirectToLogin();
+    }
 
     async function verifyAccess() {
       const access = await withTimeout(
@@ -35,42 +57,37 @@ export function AdminAuthGate({ children }: AdminAuthGateProps) {
       if (cancelled) return;
 
       if (!access) {
-        setSession(null);
-        setLoading(false);
-        setDenied(true);
-        router.replace("/admin");
+        handleNoAccess();
         return;
       }
 
       setSession(access.session);
       setLoading(false);
       setDenied(false);
+      redirectingRef.current = false;
     }
 
     verifyAccess();
 
-    const unsubscribe = onAuthStateChange(async () => {
-      const access = await getAdminAccess();
+    const unsubscribe = onAuthStateChange((nextSession) => {
       if (cancelled) return;
 
-      if (!access) {
-        setSession(null);
-        setLoading(false);
-        setDenied(true);
-        router.replace("/admin");
+      if (!sessionHasAdminAccess(nextSession)) {
+        handleNoAccess();
         return;
       }
 
-      setSession(access.session);
+      setSession(nextSession);
       setLoading(false);
       setDenied(false);
+      redirectingRef.current = false;
     });
 
     return () => {
       cancelled = true;
       unsubscribe();
     };
-  }, [router]);
+  }, [pathname, router]);
 
   if (loading) {
     return (
