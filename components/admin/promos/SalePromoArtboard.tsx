@@ -9,6 +9,7 @@ import {
   getPromoListLayout,
   type PromoListDensity,
 } from "@/lib/promo-list-layout";
+import { getPromoFont } from "@/lib/promo-font-options";
 import { siteConfig } from "@/lib/site-config";
 
 export type PromoFormat = "post" | "story";
@@ -21,6 +22,7 @@ const DIMENSIONS: Record<PromoFormat, { width: number; height: number }> = {
 export type SalePromoArtboardProps = {
   format: PromoFormat;
   services: CatalogService[];
+  fontId: string;
   className?: string;
 };
 
@@ -92,12 +94,12 @@ function PromoSaleRow({
     >
       <div className="min-w-0 flex-1 text-left">
         <p
-          className={`font-display font-semibold leading-tight text-charcoal ${styles.name}`}
+          className={`font-semibold leading-tight text-charcoal ${styles.name}`}
         >
           {service.name}
         </p>
         {!hideDuration && (
-          <p className={`mt-0.5 font-sans text-charcoal/55 ${styles.duration}`}>
+          <p className={`mt-0.5 text-charcoal/55 ${styles.duration}`}>
             {service.duration}
           </p>
         )}
@@ -105,12 +107,12 @@ function PromoSaleRow({
       <div className="shrink-0 text-right">
         {compareAtPrice && (
           <p
-            className={`font-sans font-medium text-charcoal/40 line-through ${styles.compare}`}
+            className={`font-medium text-charcoal/40 line-through ${styles.compare}`}
           >
             {compareAtPrice}
           </p>
         )}
-        <p className={`font-display font-bold text-rose-800 ${styles.price}`}>
+        <p className={`font-bold text-rose-800 ${styles.price}`}>
           {displayPrice}
         </p>
       </div>
@@ -127,25 +129,25 @@ function HeroSaleBlock({ service }: { service: CatalogService }) {
 
   return (
     <div className="text-center">
-      <p className="font-sans text-xl font-semibold uppercase tracking-[0.25em] text-rose-600">
+      <p className="text-xl font-semibold uppercase tracking-[0.25em] text-rose-600">
         {service.category}
       </p>
-      <h2 className="mt-3 font-display text-[2.75rem] font-semibold leading-[1.1] text-charcoal">
+      <h2 className="mt-3 text-[2.75rem] font-semibold leading-[1.1] text-charcoal">
         {service.name}
       </h2>
-      <p className="mx-auto mt-4 line-clamp-4 max-w-[28rem] font-sans text-xl leading-relaxed text-charcoal/65">
+      <p className="mx-auto mt-4 line-clamp-4 max-w-[28rem] text-xl leading-relaxed text-charcoal/65">
         {service.description}
       </p>
       <div className="mt-6 inline-flex flex-col items-center gap-2">
         {compareAtPrice && (
-          <span className="font-sans text-2xl font-medium text-charcoal/40 line-through">
+          <span className="text-2xl font-medium text-charcoal/40 line-through">
             {compareAtPrice}
           </span>
         )}
-        <span className="rounded-full bg-gradient-to-r from-rose-100 via-blush-100 to-rose-100 px-10 py-4 font-display text-4xl font-bold text-rose-900 ring-2 ring-rose-200/90">
+        <span className="rounded-full bg-gradient-to-r from-rose-100 via-blush-100 to-rose-100 px-10 py-4 text-4xl font-bold text-rose-900 ring-2 ring-rose-200/90">
           {displayPrice}
         </span>
-        <span className="mt-2 font-sans text-lg text-charcoal/50">
+        <span className="mt-2 text-lg text-charcoal/50">
           {service.duration}
         </span>
       </div>
@@ -192,18 +194,28 @@ function PromoSaleList({
         {pairRows(services).map((row) => (
           <div
             key={row.map((service) => service.name).join("-")}
-            className="grid grid-cols-2 gap-x-4 border-b border-rose-200/50"
+            className="grid grid-cols-2 border-b border-rose-200/50"
           >
-            {row.map((service) => (
+            <div className="border-r border-rose-300/75 px-4">
               <PromoSaleRow
-                key={service.name}
-                service={service}
+                service={row[0]}
                 density={listLayout.density}
                 hideDuration={listLayout.hideDuration}
                 twoColumn
               />
-            ))}
-            {row.length === 1 && <div aria-hidden className="min-h-px" />}
+            </div>
+            {row[1] ? (
+              <div className="px-4">
+                <PromoSaleRow
+                  service={row[1]}
+                  density={listLayout.density}
+                  hideDuration={listLayout.hideDuration}
+                  twoColumn
+                />
+              </div>
+            ) : (
+              <div aria-hidden className="min-h-full" />
+            )}
           </div>
         ))}
       </div>
@@ -232,9 +244,11 @@ function PromoSaleList({
 export function SalePromoArtboard({
   format,
   services,
+  fontId,
   className = "",
 }: SalePromoArtboardProps) {
   const { width, height } = DIMENSIONS[format];
+  const promoFont = getPromoFont(fontId);
   const handle = instagramHandleFromUrl(siteConfig.instagramUrl);
   const listServices = sortForPromo(services);
   const heroService = listServices.length === 1 ? listServices[0] : null;
@@ -243,7 +257,9 @@ export function SalePromoArtboard({
   const listLayout = getPromoListLayout(saleCount, format);
   const twoColumn = listLayout.columns === 2;
   const compactHeader =
-    listLayout.compactHeader || (!isStory && saleCount >= 5);
+    listLayout.compactHeader ||
+    (!isStory && saleCount >= 5) ||
+    (isStory && saleCount >= 10);
   const logoSrc =
     typeof window !== "undefined"
       ? `${window.location.origin}${siteConfig.logo.src}`
@@ -260,8 +276,8 @@ export function SalePromoArtboard({
 
   return (
     <div
-      className={`relative overflow-hidden bg-cream font-sans text-charcoal ${className}`}
-      style={{ width, height }}
+      className={`relative overflow-hidden bg-cream text-charcoal ${className}`}
+      style={{ width, height, fontFamily: promoFont.family }}
     >
       <div
         className="absolute inset-0"
@@ -303,27 +319,27 @@ export function SalePromoArtboard({
             className="rounded-full object-cover ring-4 ring-white/90 shadow-lg shadow-blush-300/30"
           />
           <p
-            className={`mt-3 font-display font-semibold leading-snug tracking-wide text-charcoal ${
+            className={`mt-3 font-semibold leading-snug tracking-wide text-charcoal ${
               compactHeader ? "text-[1.35rem]" : isStory ? "text-[2rem]" : "text-[1.65rem]"
             }`}
           >
             {siteConfig.name}
           </p>
           {!compactHeader && (
-            <p className="mt-1 font-sans text-base text-charcoal/55">
+            <p className="mt-1 text-base text-charcoal/55">
               {siteConfig.tagline}
             </p>
           )}
         </div>
 
         <div className="flex flex-col items-center text-center">
-          <p className="inline-flex items-center gap-3 rounded-full bg-white/80 px-5 py-2 font-sans text-xs font-bold uppercase tracking-[0.28em] text-rose-700 ring-1 ring-rose-200/90 shadow-sm">
+          <p className="inline-flex items-center gap-3 rounded-full bg-white/80 px-5 py-2 text-xs font-bold uppercase tracking-[0.28em] text-rose-700 ring-1 ring-rose-200/90 shadow-sm">
             <span aria-hidden>✦</span>
             Limited time sale
             <span aria-hidden>✦</span>
           </p>
           <h1
-            className={`mt-3 font-display font-semibold leading-tight text-charcoal ${titleSize}`}
+            className={`mt-3 font-semibold leading-tight text-charcoal ${titleSize}`}
           >
             {heroService ? "Special offer" : "Current sales"}
           </h1>
@@ -354,23 +370,23 @@ export function SalePromoArtboard({
           }`}
         >
           <p
-            className={`font-display font-semibold leading-snug text-blush-700 ${
+            className={`font-semibold leading-snug text-blush-700 ${
               compactHeader ? "text-[1.35rem]" : "text-[1.75rem]"
             }`}
           >
             Book your spot
           </p>
           <p
-            className={`mt-1 font-display font-semibold leading-snug text-charcoal ${
+            className={`mt-1 font-semibold leading-snug text-charcoal ${
               compactHeader ? "text-[1.15rem]" : "text-[1.5rem]"
             }`}
           >
             {siteConfig.name}
           </p>
-          <p className="mt-1 font-sans text-lg text-charcoal/60">
+          <p className="mt-1 text-lg text-charcoal/60">
             Link in bio · {siteConfig.location}
           </p>
-          <p className="mt-1 font-sans text-xl font-semibold text-charcoal">
+          <p className="mt-1 text-xl font-semibold text-charcoal">
             @{handle}
           </p>
         </footer>

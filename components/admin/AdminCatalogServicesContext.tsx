@@ -10,37 +10,12 @@ import {
   type ReactNode,
 } from "react";
 import type { CatalogService } from "@/lib/catalog-service";
-import type { ServiceCategory } from "@/lib/site-config";
-import {
-  loadCatalogServicesForAdmin,
-  type ServiceDraft,
-} from "@/lib/supabase/catalog-services-admin";
-
-function serviceDraftToCatalog(draft: ServiceDraft): CatalogService {
-  const idFromKey =
-    draft.isNew || draft.clientKey.startsWith("name:")
-      ? null
-      : draft.clientKey;
-
-  return {
-    id: idFromKey,
-    name: draft.name.trim(),
-    description: draft.description.trim(),
-    priceText: draft.priceText.trim(),
-    duration: draft.duration.trim(),
-    category: draft.category as ServiceCategory,
-    sortOrder: draft.sortOrder,
-    isOnSale: draft.isOnSale,
-    salePriceText: draft.isOnSale ? draft.salePriceText.trim() || null : null,
-  };
-}
+import { loadCatalogServicesForAdmin } from "@/lib/supabase/catalog-services-admin";
 
 type AdminCatalogServicesContextValue = {
-  catalogForPromo: CatalogService[];
+  savedServices: CatalogService[];
   refreshSavedServices: () => Promise<void>;
-  setServiceDrafts: (drafts: ServiceDraft[] | null) => void;
   refreshing: boolean;
-  hasLiveDrafts: boolean;
 };
 
 const AdminCatalogServicesContext =
@@ -52,9 +27,6 @@ export function AdminCatalogServicesProvider({
   children: ReactNode;
 }) {
   const [savedServices, setSavedServices] = useState<CatalogService[]>([]);
-  const [serviceDrafts, setServiceDrafts] = useState<ServiceDraft[] | null>(
-    null,
-  );
   const [refreshing, setRefreshing] = useState(false);
 
   const refreshSavedServices = useCallback(async () => {
@@ -67,31 +39,17 @@ export function AdminCatalogServicesProvider({
     }
   }, []);
 
-  const catalogForPromo = useMemo(() => {
-    if (serviceDrafts) {
-      return serviceDrafts.map(serviceDraftToCatalog);
-    }
-    return savedServices;
-  }, [serviceDrafts, savedServices]);
-
   useEffect(() => {
     void refreshSavedServices();
   }, [refreshSavedServices]);
 
   const value = useMemo(
     () => ({
-      catalogForPromo,
+      savedServices,
       refreshSavedServices,
-      setServiceDrafts,
       refreshing,
-      hasLiveDrafts: serviceDrafts !== null,
     }),
-    [
-      catalogForPromo,
-      refreshSavedServices,
-      refreshing,
-      serviceDrafts,
-    ],
+    [savedServices, refreshSavedServices, refreshing],
   );
 
   return (

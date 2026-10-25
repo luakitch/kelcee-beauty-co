@@ -86,16 +86,30 @@ function candidatesForCount(
   });
 
   if (format === "story") {
+    if (itemCount <= 1) {
+      return [L(1, "normal", false, false)];
+    }
+
+    if (itemCount <= 4) {
+      return [
+        L(2, "normal", false, false),
+        L(2, "normal", true, false),
+        L(2, "compact", false, false),
+        L(2, "compact", true, false),
+        L(1, "normal", false, false),
+        L(1, "compact", false, false),
+      ];
+    }
+
     return [
-      L(1, "normal", false, false),
-      L(1, "normal", false, true),
-      L(1, "compact", false, false),
-      L(1, "compact", false, true),
-      L(1, "compact", true, true),
-      L(1, "dense", false, itemCount > 8),
-      L(1, "dense", true, itemCount > 8),
+      L(2, "normal", false, false),
+      L(2, "normal", false, true),
+      L(2, "normal", true, true),
+      L(2, "compact", false, true),
       L(2, "compact", true, true),
+      L(2, "dense", false, true),
       L(2, "dense", true, true),
+      L(1, "compact", true, true),
       L(2, "ultra", true, true),
     ];
   }

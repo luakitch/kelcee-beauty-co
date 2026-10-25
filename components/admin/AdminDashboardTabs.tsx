@@ -6,6 +6,10 @@ import { AdminGalleryManager } from "@/components/admin/AdminGalleryManager";
 import { AdminHoursEditor } from "@/components/admin/AdminHoursEditor";
 import { AdminPromotionsEditor } from "@/components/admin/AdminPromotionsEditor";
 import { AdminServicesEditor } from "@/components/admin/AdminServicesEditor";
+import {
+  AdminStickyTabsProvider,
+  useAdminTabsNavRef,
+} from "@/components/admin/AdminStickyTabsContext";
 
 const TABS = [
   { id: "hours", label: "Hours" },
@@ -28,7 +32,8 @@ function tabFromHash(): TabId {
   return isTabId(hash) ? hash : "hours";
 }
 
-export function AdminDashboardTabs() {
+function AdminDashboardTabsInner() {
+  const tabsNavRef = useAdminTabsNavRef();
   const [activeTab, setActiveTab] = useState<TabId>("hours");
 
   useEffect(() => {
@@ -51,8 +56,9 @@ export function AdminDashboardTabs() {
     <AdminCatalogServicesProvider>
     <div className="space-y-8">
       <nav
+        ref={tabsNavRef}
         aria-label="Admin sections"
-        className="grid grid-cols-2 gap-1.5 rounded-2xl border border-blush-200 bg-white/80 p-1.5 shadow-sm sm:grid-cols-4 sm:gap-2 sm:p-2 lg:flex lg:flex-wrap"
+        className="sticky top-0 z-40 -mx-4 grid grid-cols-2 gap-1.5 rounded-none border-b border-blush-200/80 bg-blush-50/95 p-1.5 shadow-sm backdrop-blur-md sm:-mx-6 sm:grid-cols-4 sm:gap-2 sm:p-2 sm:px-6 lg:flex lg:flex-wrap"
       >
         {TABS.map((tab) => {
           const isActive = activeTab === tab.id;
@@ -91,5 +97,13 @@ export function AdminDashboardTabs() {
       </div>
     </div>
     </AdminCatalogServicesProvider>
+  );
+}
+
+export function AdminDashboardTabs() {
+  return (
+    <AdminStickyTabsProvider>
+      <AdminDashboardTabsInner />
+    </AdminStickyTabsProvider>
   );
 }

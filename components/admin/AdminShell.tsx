@@ -31,7 +31,7 @@ export function AdminShell({ title, children }: AdminShellProps) {
   }
 
   return (
-    <div className="min-h-screen overflow-x-clip bg-gradient-to-b from-blush-50 via-cream to-cream">
+    <div className="min-h-screen bg-gradient-to-b from-blush-50 via-cream to-cream">
       <header className="border-b border-blush-200/80 bg-white/80 backdrop-blur-md">
         <div className="mx-auto flex max-w-6xl items-center justify-between gap-2 px-4 py-4 sm:gap-4 sm:px-6">
           <Link

@@ -21,6 +21,7 @@ import {
   countServiceDraftChanges,
 } from "@/lib/admin-change-count";
 import { useAdminCatalogServices } from "@/components/admin/AdminCatalogServicesContext";
+import { useAdminStickyTabsHeight } from "@/components/admin/AdminStickyTabsContext";
 import {
   loadCatalogServicesForAdmin,
   saveCatalogServices,
@@ -214,7 +215,8 @@ function AdminServiceCard({
 }
 
 export function AdminServicesEditor() {
-  const { setServiceDrafts, refreshSavedServices } = useAdminCatalogServices();
+  const { refreshSavedServices } = useAdminCatalogServices();
+  const stickyTabsHeight = useAdminStickyTabsHeight();
   const [drafts, setDrafts] = useState<ServiceDraft[]>(() =>
     getDefaultCatalogServices().map(toDraft),
   );
@@ -268,16 +270,6 @@ export function AdminServicesEditor() {
   useEffect(() => {
     loadServices();
   }, [loadServices]);
-
-  useEffect(() => {
-    if (!loading) {
-      setServiceDrafts(drafts);
-    }
-  }, [drafts, loading, setServiceDrafts]);
-
-  useEffect(() => {
-    return () => setServiceDrafts(null);
-  }, [setServiceDrafts]);
 
   useEffect(() => {
     if (!landingServiceKey) {
@@ -418,7 +410,10 @@ export function AdminServicesEditor() {
 
             return (
               <div key={category} className="space-y-5">
-                <div className="flex flex-wrap items-center justify-between gap-3">
+                <div
+                  className="sticky z-30 -mx-4 flex flex-wrap items-center justify-between gap-3 border-b border-blush-200/70 bg-white/95 px-4 py-2.5 backdrop-blur-md sm:-mx-6 sm:px-6"
+                  style={{ top: stickyTabsHeight }}
+                >
                   <h3 className="font-display text-lg font-semibold text-charcoal">
                     {category}
                   </h3>
