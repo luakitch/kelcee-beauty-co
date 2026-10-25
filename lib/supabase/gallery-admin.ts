@@ -4,6 +4,7 @@ import {
   type GalleryImage,
 } from "@/lib/supabase/client";
 import { getGalleryBucket } from "@/lib/supabase/gallery-bucket";
+import { getGalleryImagesTable } from "@/lib/supabase/site-data-environment";
 
 function requireClient() {
   const supabase = getSupabaseClient();
@@ -58,7 +59,7 @@ export async function uploadGalleryImage(
   }
 
   const { data, error: insertError } = await supabase
-    .from("gallery_images")
+    .from(getGalleryImagesTable())
     .insert({
       storage_path: storagePath,
       bucket_id: bucketId,
@@ -83,7 +84,7 @@ export async function updateGalleryCaption(
   const supabase = requireClient();
 
   const { error } = await supabase
-    .from("gallery_images")
+    .from(getGalleryImagesTable())
     .update({ caption: caption.trim() || null })
     .eq("id", id);
 
@@ -97,7 +98,7 @@ export async function updateGallerySortOrder(
   const supabase = requireClient();
 
   const { error } = await supabase
-    .from("gallery_images")
+    .from(getGalleryImagesTable())
     .update({ sort_order: sortOrder })
     .eq("id", id);
 
@@ -118,7 +119,7 @@ export async function deleteGalleryImage(
   }
 
   const { error: deleteError } = await supabase
-    .from("gallery_images")
+    .from(getGalleryImagesTable())
     .delete()
     .eq("id", image.id);
 

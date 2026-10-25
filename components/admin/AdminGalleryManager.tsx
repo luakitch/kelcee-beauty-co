@@ -6,6 +6,7 @@ import {
   type GalleryImage,
 } from "@/lib/supabase/client";
 import { getGalleryBucket } from "@/lib/supabase/gallery-bucket";
+import { getGalleryImagesTable } from "@/lib/supabase/site-data-environment";
 import { ConfirmDialog } from "@/components/admin/ConfirmDialog";
 import {
   deleteGalleryImage,
@@ -131,7 +132,12 @@ export function AdminGalleryManager() {
           Add one or more images. You can edit captions and order after upload.
         </p>
         <p className="mt-2 text-xs text-charcoal/50">
-          Using storage bucket:{" "}
+          Data:{" "}
+          <span className="font-medium text-blush-600">
+            {getGalleryImagesTable()}
+          </span>
+          {" · "}
+          storage bucket:{" "}
           <span className="font-medium text-blush-600">{getGalleryBucket()}</span>
         </p>
 

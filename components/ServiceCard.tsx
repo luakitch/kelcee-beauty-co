@@ -1,4 +1,5 @@
 import { BowAccent } from "@/components/BowAccent";
+import { ServicePriceBadge } from "@/components/ServicePriceBadge";
 import { siteConfig } from "@/lib/site-config";
 
 type ServiceCardProps = {
@@ -7,6 +8,8 @@ type ServiceCardProps = {
   price: string;
   duration?: string;
   href?: string;
+  isOnSale?: boolean;
+  salePrice?: string | null;
 };
 
 export function ServiceCard({
@@ -15,6 +18,8 @@ export function ServiceCard({
   price,
   duration,
   href = siteConfig.bookingUrl,
+  isOnSale = false,
+  salePrice = null,
 }: ServiceCardProps) {
   return (
     <a
@@ -29,9 +34,11 @@ export function ServiceCard({
           size={28}
           className="shrink-0 text-blush-300 transition group-hover:text-blush-400"
         />
-        <span className="rounded-full bg-blush-100 px-3 py-1 text-sm font-medium text-blush-700">
-          {price}
-        </span>
+        <ServicePriceBadge
+          price={price}
+          isOnSale={isOnSale}
+          salePrice={salePrice}
+        />
       </div>
       <h3 className="font-display text-xl font-semibold text-charcoal">{name}</h3>
       {duration && (

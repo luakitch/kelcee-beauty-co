@@ -1,25 +1,50 @@
 "use client";
 
-import { hoursSchedule } from "@/lib/site-config";
+import { useEffect, useState } from "react";
+import {
+  getDefaultHoursSchedule,
+  type HoursScheduleEntry,
+} from "@/lib/hours";
+import { fetchBusinessHours } from "@/lib/supabase/hours";
 
-/** Monday = 0 … Sunday = 6 (matches hoursSchedule order) */
+/** Monday = 0 … Sunday = 6 (matches schedule order) */
 function getTodayIndex(): number {
   const day = new Date().getDay();
   return day === 0 ? 6 : day - 1;
 }
 
 export function HoursGrid() {
+  const [schedule, setSchedule] = useState<HoursScheduleEntry[]>(
+    getDefaultHoursSchedule(),
+  );
+  const [loaded, setLoaded] = useState(false);
+
+  useEffect(() => {
+    let cancelled = false;
+
+    fetchBusinessHours().then((data) => {
+      if (!cancelled) {
+        setSchedule(data);
+        setLoaded(true);
+      }
+    });
+
+    return () => {
+      cancelled = true;
+    };
+  }, []);
+
   const todayIndex = getTodayIndex();
 
   return (
     <ul className="flex flex-col gap-1">
-      {hoursSchedule.map((entry, index) => {
-        const isToday = index === todayIndex;
+      {schedule.map((entry, index) => {
+        const isToday = loaded && index === todayIndex;
         const isClosed = entry.hours.toLowerCase() === "closed";
 
         return (
           <li
-            key={entry.label}
+            key={entry.dayKey}
             aria-current={isToday ? "date" : undefined}
             className={`flex items-center justify-between gap-4 rounded-xl px-4 py-3 ${
               isToday ? "bg-blush-100/80" : ""

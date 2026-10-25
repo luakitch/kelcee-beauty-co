@@ -5,6 +5,10 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { BrandLogo } from "@/components/BrandLogo";
 import { getSession, signOut } from "@/lib/supabase/auth";
+import {
+  getSiteDataEnvironmentLabel,
+  isDevelopmentDataSite,
+} from "@/lib/supabase/site-data-environment";
 
 type AdminShellProps = {
   title: string;
@@ -36,7 +40,14 @@ export function AdminShell({ title, children }: AdminShellProps) {
               <p className="font-display text-lg font-semibold text-charcoal">
                 {title}
               </p>
-              <p className="text-xs text-charcoal/50">Kelcee Beauty Co.</p>
+              <p className="text-xs text-charcoal/50">
+                Kelcee Beauty Co.
+                {isDevelopmentDataSite() && (
+                  <span className="ml-2 rounded-full bg-amber-100 px-2 py-0.5 font-medium text-amber-900">
+                    {getSiteDataEnvironmentLabel()} data
+                  </span>
+                )}
+              </p>
             </div>
           </Link>
 
