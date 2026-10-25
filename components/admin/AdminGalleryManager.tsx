@@ -124,14 +124,14 @@ export function AdminGalleryManager() {
 
   return (
     <div className="space-y-8">
-      <section className="rounded-2xl border border-blush-200 bg-white/80 p-6 shadow-sm">
+      <section className="rounded-2xl border border-blush-200 bg-white/80 p-4 shadow-sm sm:p-6">
         <h2 className="font-display text-2xl font-semibold text-charcoal">
           Upload Photos
         </h2>
         <p className="mt-2 text-sm text-charcoal/70">
           Add one or more images. You can edit captions and order after upload.
         </p>
-        <p className="mt-2 text-xs text-charcoal/50">
+        <p className="mt-2 break-words text-xs text-charcoal/50">
           Data:{" "}
           <span className="font-medium text-blush-600">
             {getGalleryImagesTable()}

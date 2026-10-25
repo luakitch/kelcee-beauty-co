@@ -48,7 +48,7 @@ export function AdminDashboardTabs() {
     <div className="space-y-8">
       <nav
         aria-label="Admin sections"
-        className="flex flex-wrap gap-2 rounded-2xl border border-blush-200 bg-white/80 p-2 shadow-sm"
+        className="grid grid-cols-3 gap-1.5 rounded-2xl border border-blush-200 bg-white/80 p-1.5 shadow-sm sm:flex sm:flex-wrap sm:gap-2 sm:p-2"
       >
         {TABS.map((tab) => {
           const isActive = activeTab === tab.id;
@@ -59,7 +59,7 @@ export function AdminDashboardTabs() {
               type="button"
               onClick={() => selectTab(tab.id)}
               aria-current={isActive ? "page" : undefined}
-              className={`rounded-xl px-5 py-2.5 text-sm font-semibold transition ${
+              className={`rounded-xl px-2 py-2.5 text-xs font-semibold transition sm:px-5 sm:text-sm ${
                 isActive
                   ? "bg-blush-500 text-white shadow-sm"
                   : "text-charcoal/70 hover:bg-blush-50 hover:text-charcoal"

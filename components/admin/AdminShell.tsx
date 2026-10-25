@@ -31,10 +31,13 @@ export function AdminShell({ title, children }: AdminShellProps) {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-blush-50 via-cream to-cream">
+    <div className="min-h-screen overflow-x-clip bg-gradient-to-b from-blush-50 via-cream to-cream">
       <header className="border-b border-blush-200/80 bg-white/80 backdrop-blur-md">
-        <div className="mx-auto flex max-w-6xl items-center justify-between gap-4 px-4 py-4 sm:px-6">
-          <Link href="/admin/dashboard" className="flex items-center gap-3">
+        <div className="mx-auto flex max-w-6xl items-center justify-between gap-2 px-4 py-4 sm:gap-4 sm:px-6">
+          <Link
+            href="/admin/dashboard"
+            className="flex min-w-0 flex-1 items-center gap-3"
+          >
             <BrandLogo size="sm" showName={false} />
             <div>
               <p className="font-display text-lg font-semibold text-charcoal">
@@ -51,7 +54,7 @@ export function AdminShell({ title, children }: AdminShellProps) {
             </div>
           </Link>
 
-          <div className="flex items-center gap-3">
+          <div className="flex shrink-0 items-center gap-2 sm:gap-3">
             {signedInEmail && (
               <p className="hidden text-xs text-charcoal/60 md:block">
                 Signed in as{" "}
@@ -65,10 +68,10 @@ export function AdminShell({ title, children }: AdminShellProps) {
               Change password
             </Link>
             <Link
-              href="/gallery"
+              href="/"
               className="hidden rounded-full border border-blush-300 px-4 py-2 text-xs font-medium text-charcoal transition hover:bg-blush-50 sm:inline-flex"
             >
-              View public gallery
+              View public site
             </Link>
             <button
               type="button"
@@ -81,7 +84,9 @@ export function AdminShell({ title, children }: AdminShellProps) {
         </div>
       </header>
 
-      <main className="mx-auto max-w-6xl px-4 py-10 sm:px-6">{children}</main>
+      <main className="mx-auto min-w-0 max-w-6xl px-4 py-8 sm:px-6 sm:py-10">
+        {children}
+      </main>
     </div>
   );
 }

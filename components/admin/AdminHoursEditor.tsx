@@ -146,9 +146,9 @@ export function AdminHoursEditor() {
           onSubmit={handleSubmit}
           className={`space-y-4 ${changeCount > 0 ? "pb-24" : ""}`}
         >
-          <ul className="overflow-x-auto rounded-lg border border-blush-100 bg-blush-50/20 px-3 pb-1 pt-2">
+          <ul className="space-y-2 rounded-lg border border-blush-100 bg-blush-50/20 p-2 md:space-y-0 md:p-0 md:px-3 md:pb-1 md:pt-2">
             <li
-              className={`${HOURS_EDITOR_ROW_GRID} border-b border-blush-100 pb-2 text-[10px] font-medium uppercase tracking-wide text-charcoal/45`}
+              className={`hidden ${HOURS_EDITOR_ROW_GRID} border-b border-blush-100 pb-2 text-[10px] font-medium uppercase tracking-wide text-charcoal/45 md:grid`}
               aria-hidden
             >
               <span>Day</span>
