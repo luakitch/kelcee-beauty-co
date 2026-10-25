@@ -3,44 +3,18 @@ import { BookButton } from "@/components/BookButton";
 import { BowDivider } from "@/components/BowAccent";
 import { GalleryGrid } from "@/components/GalleryGrid";
 import { Hero } from "@/components/Hero";
+import { HomeSalesSection } from "@/components/HomeSalesSection";
 import { HoursSection } from "@/components/HoursSection";
-import { ServiceCard } from "@/components/ServiceCard";
-import { getFeaturedServices } from "@/lib/site-config";
+import { FeaturedServicesSection } from "@/components/FeaturedServicesSection";
 
 export default function HomePage() {
-  const featuredServices = getFeaturedServices().slice(0, 3);
-
   return (
     <>
       <Hero />
 
-      <section className="mx-auto max-w-6xl px-4 py-16 sm:px-6 sm:py-20">
-        <div className="mb-10 text-center">
-          <h2 className="font-display text-3xl font-semibold text-charcoal sm:text-4xl">
-            Our Services
-          </h2>
-          <p className="mx-auto mt-3 max-w-xl text-charcoal/70">
-            Cuts, color, styling, lashes, brows, and more — see full pricing on
-            our services page.
-          </p>
-          <BowDivider className="mt-6" />
-        </div>
+      <HomeSalesSection />
 
-        <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-          {featuredServices.map((service) => (
-            <ServiceCard key={service.name} {...service} />
-          ))}
-        </div>
-
-        <div className="mt-10 text-center">
-          <Link
-            href="/services"
-            className="text-sm font-medium text-blush-600 transition hover:text-blush-700"
-          >
-            View all services →
-          </Link>
-        </div>
-      </section>
+      <FeaturedServicesSection />
 
       <HoursSection />
 

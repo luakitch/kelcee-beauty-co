@@ -1,8 +1,8 @@
 "use client";
 
 import { usePathname } from "next/navigation";
-import { Footer } from "@/components/Footer";
-import { Header } from "@/components/Header";
+import { PublicSiteLayout } from "@/components/PublicSiteLayout";
+import { SaleServicesProvider } from "@/components/SaleServicesProvider";
 
 export function SiteChrome({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
@@ -13,10 +13,8 @@ export function SiteChrome({ children }: { children: React.ReactNode }) {
   }
 
   return (
-    <>
-      <Header />
-      <main className="flex-1">{children}</main>
-      <Footer />
-    </>
+    <SaleServicesProvider>
+      <PublicSiteLayout>{children}</PublicSiteLayout>
+    </SaleServicesProvider>
   );
 }

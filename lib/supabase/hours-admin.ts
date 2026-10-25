@@ -1,6 +1,7 @@
 import { getDefaultHoursSchedule, type DayKey } from "@/lib/hours";
 import { getSupabaseClient } from "@/lib/supabase/client";
 import { fetchBusinessHours } from "@/lib/supabase/hours";
+import { getBusinessHoursTable } from "@/lib/supabase/site-data-environment";
 
 function requireClient() {
   const supabase = getSupabaseClient();
@@ -24,7 +25,7 @@ export async function saveBusinessHours(
     updated_at: new Date().toISOString(),
   }));
 
-  const { error } = await supabase.from("business_hours").upsert(rows, {
+  const { error } = await supabase.from(getBusinessHoursTable()).upsert(rows, {
     onConflict: "day_key",
   });
 

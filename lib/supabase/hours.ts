@@ -4,6 +4,7 @@ import {
   type HoursScheduleEntry,
 } from "@/lib/hours";
 import { getSupabaseClient } from "@/lib/supabase/client";
+import { getBusinessHoursTable } from "@/lib/supabase/site-data-environment";
 
 export type BusinessHourRow = {
   day_key: DayKey;
@@ -32,7 +33,7 @@ export async function fetchBusinessHours(): Promise<HoursScheduleEntry[]> {
   }
 
   const { data, error } = await supabase
-    .from("business_hours")
+    .from(getBusinessHoursTable())
     .select("day_key, label, hours_text, sort_order, updated_at")
     .order("sort_order", { ascending: true });
 

@@ -3,6 +3,7 @@ import {
   getGalleryBucket,
   type GalleryBucketName,
 } from "@/lib/supabase/gallery-bucket";
+import { getGalleryImagesTable } from "@/lib/supabase/site-data-environment";
 
 export type GalleryImage = {
   id: string;
@@ -48,7 +49,7 @@ export async function fetchGalleryImages(): Promise<GalleryImage[]> {
   const bucketId = getGalleryBucket();
 
   const { data, error } = await supabase
-    .from("gallery_images")
+    .from(getGalleryImagesTable())
     .select("*")
     .eq("bucket_id", bucketId)
     .order("sort_order", { ascending: true });

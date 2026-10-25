@@ -72,7 +72,15 @@ This site is a **static export** (`output: "export"` → `out/`). Use **Cloudfla
 |---|---|
 | `NEXT_PUBLIC_SUPABASE_URL` | Your Supabase project URL |
 | `NEXT_PUBLIC_SUPABASE_ANON_KEY` | Publishable key (`sb_publishable_...`) |
-| `NEXT_PUBLIC_SUPABASE_GALLERY_BUCKET` | `gallery` |
+| `NEXT_PUBLIC_SUPABASE_GALLERY_BUCKET` | `gallery` (production tables + storage) |
+
+**Preview / staging builds** (e.g. `staging` branch → preview.kelceehairco.com) should set:
+
+| Variable | Preview value |
+|---|---|
+| `NEXT_PUBLIC_SUPABASE_GALLERY_BUCKET` | `gallery-dev` |
+
+That single variable selects **dev Supabase tables** (`*_dev`) and the `gallery-dev` storage bucket. Production uses `gallery` and the non-`_dev` tables. Same Supabase project; data is fully isolated between environments.
 | `NEXT_PUBLIC_ADMIN_EMAILS` | Comma-separated admin emails |
 | `NEXT_PUBLIC_INSTAGRAM_URL` | Instagram profile URL |
 | `NODE_VERSION` | `22` |

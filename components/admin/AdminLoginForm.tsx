@@ -40,7 +40,7 @@ export function AdminLoginForm() {
           Admin Login
         </h1>
         <p className="mt-2 text-sm text-charcoal/70">
-          Sign in to manage hours and gallery photos.
+          Sign in to manage hours, services, and gallery photos.
         </p>
 
         <form onSubmit={handleSubmit} className="mt-8 space-y-5">

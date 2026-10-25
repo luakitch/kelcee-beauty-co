@@ -6,6 +6,7 @@ type HoursTimeSelectProps = {
   onChange: (value: number) => void;
   options: { value: number; label: string }[];
   "aria-label": string;
+  className?: string;
 };
 
 export function HoursTimeSelect({
@@ -14,15 +15,16 @@ export function HoursTimeSelect({
   onChange,
   options,
   "aria-label": ariaLabel,
+  className = "",
 }: HoursTimeSelectProps) {
   return (
-    <div className="relative w-[6.75rem] max-w-full">
+    <div className={`relative min-w-0 ${className}`}>
       <select
         id={id}
         value={value}
         onChange={(event) => onChange(Number(event.target.value))}
         aria-label={ariaLabel}
-        className="h-8 w-full appearance-none rounded-lg border border-blush-200 bg-white py-0 pl-2.5 pr-9 text-xs text-charcoal outline-none focus:border-blush-400 focus:ring-1 focus:ring-blush-200"
+        className="h-8 w-full min-w-0 appearance-none rounded-lg border border-blush-200 bg-white py-0 pl-2.5 pr-9 text-xs text-charcoal outline-none focus:border-blush-400 focus:ring-1 focus:ring-blush-200"
       >
         {options.map((option) => (
           <option key={option.value} value={option.value}>
